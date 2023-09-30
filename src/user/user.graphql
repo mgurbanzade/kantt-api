@@ -1,0 +1,43 @@
+scalar UserWhereUniqueInput
+
+type User {
+  id: Int
+  firstname: String
+  lastname: String
+  password: String
+  email: String
+}
+
+input CreateUserInput {
+  firstname: String!
+  lastname: String!
+  password: String!
+  email: String!
+}
+
+input UpdateUserInput {
+  firstname: String
+  password: String
+  lastname: String
+  email: String
+}
+
+input ResetPasswordInput {
+  password: String!
+  token: String!
+  email: String!
+}
+
+type Query {
+  getAllUsers: [User]!
+  getUser(where: UserWhereUniqueInput!): User
+  getUserProfile: User
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(id: Int!, updateUserInput: UpdateUserInput!): User!
+  setCurrentRefreshToken(refreshToken: String!, id: Int!): User!
+  resetPassword(resetPasswordInput: ResetPasswordInput!): User!
+  removeUser(id: Int!): User
+}

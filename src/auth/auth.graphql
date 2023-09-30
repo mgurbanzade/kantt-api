@@ -1,0 +1,47 @@
+scalar AccountType
+
+type LoginResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type RefreshResponse {
+  user: User!
+  accessToken: String!
+  expSeconds: Int!
+}
+
+type SignupResponse {
+  user: User!
+}
+
+type LogoutResponse {
+  success: Boolean!
+}
+
+type GetCurrentUserResponse {
+  user: User
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input SignupUserInput {
+  firstname: String!
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  signup(signupUserInput: SignupUserInput!): LoginResponse!
+  logout: LogoutResponse!
+}
+
+type Query {
+  getCurrentUser: GetCurrentUserResponse!
+  refresh: RefreshResponse!
+}

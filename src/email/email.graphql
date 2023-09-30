@@ -1,0 +1,9 @@
+type SuccessPayload {
+  success: Boolean!
+}
+
+type Mutation {
+  verifyAccount(token: String!): SuccessPayload!
+  resendVerificationLink(email: String!): SuccessPayload!
+  sendPasswordResetLink(email: String!): SuccessPayload!
+}

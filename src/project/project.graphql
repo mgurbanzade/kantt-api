@@ -1,0 +1,41 @@
+type Project {
+  id: Int
+  uuid: String
+  title: String
+  description: String
+  progress: Int
+  isArchived: Boolean
+  author: User
+}
+
+input CreateProjectInput {
+  title: String!
+  description: String!
+  authorId: Int!
+}
+
+input UpdateProjectInput {
+  title: String
+  description: String
+  progress: Int
+  isArchived: Boolean
+}
+
+input ProjectWhereInput {
+  id: Int
+  title: String
+  description: String
+  progress: Int
+  isArchived: Boolean
+}
+
+type Query {
+  getAllProjects(where: ProjectWhereInput!): [Project]!
+  getProject(uuid: String!): Project
+}
+
+type Mutation {
+  createProject(createProjectInput: CreateProjectInput!): Project!
+  updateProject(id: Int!, updateProjectInput: UpdateProjectInput!): Project!
+  removeProject(id: Int!): Project
+}
