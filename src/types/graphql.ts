@@ -19,6 +19,44 @@ export class SignupUserInput {
     password: string;
 }
 
+export class CreateBoardInput {
+    title: string;
+    description: string;
+    authorId: number;
+}
+
+export class UpdateBoardInput {
+    title?: Nullable<string>;
+    description?: Nullable<string>;
+    progress?: Nullable<number>;
+    isArchived?: Nullable<boolean>;
+}
+
+export class BoardWhereInput {
+    id?: Nullable<number>;
+    title?: Nullable<string>;
+    description?: Nullable<string>;
+    progress?: Nullable<number>;
+    isArchived?: Nullable<boolean>;
+}
+
+export class CreateColumnInput {
+    title: string;
+}
+
+export class UpdateColumnInput {
+    title?: Nullable<string>;
+}
+
+export class ColumnWhereInput {
+    id?: Nullable<number>;
+    title?: Nullable<string>;
+}
+
+export class HandleGoalQueryInput {
+    body: string;
+}
+
 export class CreateProjectInput {
     title: string;
     description: string;
@@ -38,6 +76,26 @@ export class ProjectWhereInput {
     description?: Nullable<string>;
     progress?: Nullable<number>;
     isArchived?: Nullable<boolean>;
+}
+
+export class CreateTaskInput {
+    title: string;
+    description: string;
+    order: number;
+}
+
+export class UpdateTaskInput {
+    title?: Nullable<string>;
+    description?: Nullable<string>;
+    columnId?: Nullable<number>;
+    order?: Nullable<number>;
+}
+
+export class TaskWhereInput {
+    id?: Nullable<number>;
+    title?: Nullable<string>;
+    description?: Nullable<string>;
+    columnId?: Nullable<number>;
 }
 
 export class CreateUserInput {
@@ -91,17 +149,37 @@ export abstract class IMutation {
 
     abstract logout(): LogoutResponse | Promise<LogoutResponse>;
 
+    abstract createBoard(createBoardInput: CreateBoardInput): Board | Promise<Board>;
+
+    abstract updateBoard(id: number, updateBoardInput: UpdateBoardInput): Board | Promise<Board>;
+
+    abstract removeBoard(id: number): Nullable<Board> | Promise<Nullable<Board>>;
+
+    abstract createColumn(createColumnInput: CreateColumnInput): Column | Promise<Column>;
+
+    abstract updateColumn(id: number, updateColumnInput: UpdateColumnInput): Column | Promise<Column>;
+
+    abstract removeColumn(id: number): Nullable<Column> | Promise<Nullable<Column>>;
+
     abstract verifyAccount(token: string): SuccessPayload | Promise<SuccessPayload>;
 
     abstract resendVerificationLink(email: string): SuccessPayload | Promise<SuccessPayload>;
 
     abstract sendPasswordResetLink(email: string): SuccessPayload | Promise<SuccessPayload>;
 
+    abstract handleGoalQuery(handleGoalQueryInput: HandleGoalQueryInput): Nullable<HandleGoalQueryPayload> | Promise<Nullable<HandleGoalQueryPayload>>;
+
     abstract createProject(createProjectInput: CreateProjectInput): Project | Promise<Project>;
 
     abstract updateProject(id: number, updateProjectInput: UpdateProjectInput): Project | Promise<Project>;
 
     abstract removeProject(id: number): Nullable<Project> | Promise<Nullable<Project>>;
+
+    abstract createTask(createTaskInput: CreateTaskInput): Task | Promise<Task>;
+
+    abstract updateTask(id: number, updateTaskInput: UpdateTaskInput): Task | Promise<Task>;
+
+    abstract removeTask(id: number): Nullable<Task> | Promise<Nullable<Task>>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 
@@ -119,9 +197,21 @@ export abstract class IQuery {
 
     abstract refresh(): RefreshResponse | Promise<RefreshResponse>;
 
+    abstract getAllBoards(where: BoardWhereInput): Nullable<Board>[] | Promise<Nullable<Board>[]>;
+
+    abstract getBoard(id: number): Nullable<Board> | Promise<Nullable<Board>>;
+
+    abstract getAllColumns(where: ColumnWhereInput): Nullable<Column>[] | Promise<Nullable<Column>[]>;
+
+    abstract getColumn(uuid: string): Nullable<Column> | Promise<Nullable<Column>>;
+
     abstract getAllProjects(where: ProjectWhereInput): Nullable<Project>[] | Promise<Nullable<Project>[]>;
 
     abstract getProject(uuid: string): Nullable<Project> | Promise<Nullable<Project>>;
+
+    abstract getAllTasks(where: TaskWhereInput): Nullable<Task>[] | Promise<Nullable<Task>[]>;
+
+    abstract getTask(uuid: string): Nullable<Task> | Promise<Nullable<Task>>;
 
     abstract getAllUsers(): Nullable<User>[] | Promise<Nullable<User>[]>;
 
@@ -130,8 +220,35 @@ export abstract class IQuery {
     abstract getUserProfile(): Nullable<User> | Promise<Nullable<User>>;
 }
 
+export class Board {
+    id?: Nullable<number>;
+    uuid?: Nullable<string>;
+    title?: Nullable<string>;
+    description?: Nullable<string>;
+    isArchived?: Nullable<boolean>;
+    project?: Nullable<Project>;
+    tasks?: Nullable<Nullable<Task>[]>;
+    columns?: Nullable<Nullable<Column>[]>;
+}
+
+export class Column {
+    id?: Nullable<number>;
+    title?: Nullable<string>;
+    board?: Nullable<Board>;
+    tasks?: Nullable<Nullable<Task>[]>;
+}
+
 export class SuccessPayload {
     success: boolean;
+}
+
+export class GoalQuery {
+    body?: Nullable<string>;
+}
+
+export class HandleGoalQueryPayload {
+    success: boolean;
+    project?: Nullable<Project>;
 }
 
 export class Project {
@@ -142,6 +259,18 @@ export class Project {
     progress?: Nullable<number>;
     isArchived?: Nullable<boolean>;
     author?: Nullable<User>;
+    boards?: Nullable<Nullable<Board>[]>;
+}
+
+export class Task {
+    id?: Nullable<number>;
+    uuid?: Nullable<string>;
+    title?: Nullable<string>;
+    description?: Nullable<string>;
+    order?: Nullable<number>;
+    board?: Nullable<Board>;
+    column?: Nullable<Column>;
+    columnId?: Nullable<number>;
 }
 
 export class User {

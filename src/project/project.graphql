@@ -6,6 +6,7 @@ type Project {
   progress: Int
   isArchived: Boolean
   author: User
+  boards: [Board]
 }
 
 input CreateProjectInput {

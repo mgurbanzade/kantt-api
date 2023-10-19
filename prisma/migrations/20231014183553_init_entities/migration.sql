@@ -1,6 +1,3 @@
--- CreateEnum
-CREATE TYPE "TaskStatus" AS ENUM ('TODO', 'IN_PROGRESS', 'DONE');
-
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -26,7 +23,7 @@ CREATE TABLE "Project" (
     "description" TEXT NOT NULL,
     "progress" INTEGER NOT NULL DEFAULT 0,
     "isArchived" BOOLEAN NOT NULL DEFAULT false,
-    "authorId" INTEGER NOT NULL,
+    "authorId" INTEGER,
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
 
@@ -48,13 +45,25 @@ CREATE TABLE "Board" (
 );
 
 -- CreateTable
+CREATE TABLE "Column" (
+    "id" SERIAL NOT NULL,
+    "title" VARCHAR(200) NOT NULL,
+    "boardId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(3) NOT NULL,
+
+    CONSTRAINT "Column_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Task" (
     "id" SERIAL NOT NULL,
     "uuid" TEXT NOT NULL,
     "title" VARCHAR(200) NOT NULL,
     "description" TEXT,
+    "order" DOUBLE PRECISION NOT NULL,
     "boardId" INTEGER NOT NULL,
-    "status" "TaskStatus" NOT NULL,
+    "columnId" INTEGER NOT NULL,
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
 );
@@ -75,10 +84,16 @@ CREATE UNIQUE INDEX "Board_uuid_key" ON "Board"("uuid");
 CREATE UNIQUE INDEX "Task_uuid_key" ON "Task"("uuid");
 
 -- AddForeignKey
-ALTER TABLE "Project" ADD CONSTRAINT "Project_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Project" ADD CONSTRAINT "Project_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Board" ADD CONSTRAINT "Board_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Column" ADD CONSTRAINT "Column_boardId_fkey" FOREIGN KEY ("boardId") REFERENCES "Board"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Task" ADD CONSTRAINT "Task_columnId_fkey" FOREIGN KEY ("columnId") REFERENCES "Column"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Task" ADD CONSTRAINT "Task_boardId_fkey" FOREIGN KEY ("boardId") REFERENCES "Board"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

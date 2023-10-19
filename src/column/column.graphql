@@ -1,0 +1,30 @@
+type Column {
+  id: Int
+  title: String
+  board: Board
+  tasks: [Task]
+}
+
+input CreateColumnInput {
+  title: String!
+}
+
+input UpdateColumnInput {
+  title: String
+}
+
+input ColumnWhereInput {
+  id: Int
+  title: String
+}
+
+type Query {
+  getAllColumns(where: ColumnWhereInput!): [Column]!
+  getColumn(uuid: String!): Column
+}
+
+type Mutation {
+  createColumn(createColumnInput: CreateColumnInput!): Column!
+  updateColumn(id: Int!, updateColumnInput: UpdateColumnInput!): Column!
+  removeColumn(id: Int!): Column
+}

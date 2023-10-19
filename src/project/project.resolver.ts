@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { User } from '@src/types/graphql';
+import { Board, User } from '@src/types/graphql';
 import { ProjectService } from './project.service';
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 import { AuthorGuard } from './guards/author.guard';
@@ -33,7 +33,7 @@ export class ProjectResolver {
   }
 
   @Query('getProject')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   findOne(@Args('uuid') uuid: string) {
     return this.projectService.findOne({ uuid });
   }
@@ -59,5 +59,10 @@ export class ProjectResolver {
   @ResolveField(() => User)
   author(@Parent() project) {
     return this.projectService.author(project.authorId);
+  }
+
+  @ResolveField(() => [Board])
+  boards(@Parent() project) {
+    return this.projectService.boards(project.id);
   }
 }

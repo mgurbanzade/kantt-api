@@ -20,6 +20,6 @@ export class AuthorGuard implements CanActivate {
       id: Number(queryVariables.id),
     });
 
-    return project.authorId == requestedUser.id;
+    return project.author.id == requestedUser.id;
   }
 }

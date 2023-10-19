@@ -15,7 +15,12 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailModule } from './email/email.module';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { GoalQueryModule } from './goal-query/goal-query.module';
 import * as Joi from 'joi';
+import { OpenAIModule } from './openai/openai.module';
+import { BoardModule } from './board/board.module';
+import { ColumnModule } from './column/column.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -53,7 +58,12 @@ import * as Joi from 'joi';
     PrismaModule,
     UserModule,
     ProjectModule,
+    BoardModule,
+    ColumnModule,
+    TaskModule,
     AuthModule,
+    GoalQueryModule,
+    OpenAIModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { User, Project, Prisma } from '@prisma/client';
+import { User, Prisma } from '@prisma/client';
+import { Project } from '@src/types/graphql';
 import { PrismaService } from '@src/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -45,6 +46,14 @@ export class ProjectService {
     if (!id) return null;
     return this.prisma.user.findUnique({
       where: { id },
+    });
+  }
+
+  boards(projectId: number) {
+    return this.prisma.board.findMany({
+      where: {
+        projectId,
+      },
     });
   }
 }

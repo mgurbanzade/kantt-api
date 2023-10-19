@@ -1,0 +1,18 @@
+type GoalQuery {
+  body: String
+}
+
+input HandleGoalQueryInput {
+  body: String!
+}
+
+type HandleGoalQueryPayload {
+  success: Boolean!
+  project: Project
+}
+
+type Mutation {
+  handleGoalQuery(
+    handleGoalQueryInput: HandleGoalQueryInput!
+  ): HandleGoalQueryPayload
+}

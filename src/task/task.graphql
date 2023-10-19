@@ -1,0 +1,41 @@
+type Task {
+  id: Int
+  uuid: String
+  title: String
+  description: String
+  order: Float
+  board: Board
+  column: Column
+  columnId: Int
+}
+
+input CreateTaskInput {
+  title: String!
+  description: String!
+  order: Float!
+}
+
+input UpdateTaskInput {
+  title: String
+  description: String
+  columnId: Int
+  order: Float
+}
+
+input TaskWhereInput {
+  id: Int
+  title: String
+  description: String
+  columnId: Int
+}
+
+type Query {
+  getAllTasks(where: TaskWhereInput!): [Task]!
+  getTask(uuid: String!): Task
+}
+
+type Mutation {
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  updateTask(id: Int!, updateTaskInput: UpdateTaskInput!): Task!
+  removeTask(id: Int!): Task
+}
