@@ -38,6 +38,9 @@ export class ProjectService {
   remove(where: Prisma.ProjectWhereUniqueInput): Promise<Project> {
     return this.prisma.project.delete({
       where,
+      include: {
+        boards: true,
+      },
     });
   }
 

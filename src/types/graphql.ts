@@ -205,7 +205,7 @@ export abstract class IQuery {
 
     abstract getColumn(uuid: string): Nullable<Column> | Promise<Nullable<Column>>;
 
-    abstract getAllProjects(where: ProjectWhereInput): Nullable<Project>[] | Promise<Nullable<Project>[]>;
+    abstract getAllProjects(where?: Nullable<ProjectWhereInput>): Nullable<Project>[] | Promise<Nullable<Project>[]>;
 
     abstract getProject(uuid: string): Nullable<Project> | Promise<Nullable<Project>>;
 

@@ -27,7 +27,7 @@ export class ProjectResolver {
   }
 
   @Query('getAllProjects')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   findAll(@Args('where') where: Prisma.ProjectWhereInput) {
     return this.projectService.findAll(where);
   }
@@ -39,7 +39,7 @@ export class ProjectResolver {
   }
 
   @Mutation('updateProject')
-  @UseGuards(JwtAuthGuard, AuthorGuard)
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
   update(
     @Args('id') id: number,
     @Args('updateProjectInput')
@@ -49,7 +49,7 @@ export class ProjectResolver {
   }
 
   @Mutation('removeProject')
-  @UseGuards(JwtAuthGuard, AuthorGuard)
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
   remove(@Args('id') id: number) {
     return this.projectService.remove({ id });
   }

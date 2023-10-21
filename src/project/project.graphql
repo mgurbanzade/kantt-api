@@ -31,7 +31,7 @@ input ProjectWhereInput {
 }
 
 type Query {
-  getAllProjects(where: ProjectWhereInput!): [Project]!
+  getAllProjects(where: ProjectWhereInput): [Project]!
   getProject(uuid: String!): Project
 }
 
