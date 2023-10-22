@@ -13,6 +13,8 @@ input CreateTaskInput {
   title: String!
   description: String!
   order: Float!
+  boardId: Int!
+  columnId: Int!
 }
 
 input UpdateTaskInput {

@@ -3,16 +3,17 @@ import { UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { TaskService } from './task.service';
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
+import { CreateTaskInput } from '@src/types/graphql';
 
 @Resolver('Task')
 export class TaskResolver {
   constructor(private readonly taskService: TaskService) {}
 
   @Mutation('createTask')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   create(
     @Args('createTaskInput')
-    createTaskInput: Prisma.TaskCreateInput,
+    createTaskInput: CreateTaskInput,
   ) {
     return this.taskService.create(createTaskInput);
   }
@@ -40,7 +41,7 @@ export class TaskResolver {
   }
 
   @Mutation('removeTask')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   remove(@Args('id') id: number) {
     return this.taskService.remove({ id });
   }

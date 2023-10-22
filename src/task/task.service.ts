@@ -1,17 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { Task } from '@src/types/graphql';
+import { CreateTaskInput, Task } from '@src/types/graphql';
 import { PrismaService } from '@src/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class TaskService {
   constructor(private prisma: PrismaService) {}
-  create(data: Prisma.TaskCreateInput): Promise<Task> {
+  create(createTaskInput: CreateTaskInput): Promise<Task> {
+    const { boardId, columnId, ...rest } = createTaskInput;
     return this.prisma.task.create({
       data: {
-        ...data,
+        ...rest,
         uuid: uuidv4(),
+        board: {
+          connect: {
+            id: boardId,
+          },
+        },
+        column: {
+          connect: {
+            id: columnId,
+          },
+        },
       },
     });
   }

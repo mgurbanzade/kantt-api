@@ -82,6 +82,8 @@ export class CreateTaskInput {
     title: string;
     description: string;
     order: number;
+    boardId: number;
+    columnId: number;
 }
 
 export class UpdateTaskInput {
