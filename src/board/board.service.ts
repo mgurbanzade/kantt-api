@@ -50,6 +50,9 @@ export class BoardService {
       where: {
         boardId,
       },
+      orderBy: {
+        id: 'asc',
+      },
     });
   }
 }

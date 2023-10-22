@@ -38,7 +38,7 @@ export class ColumnResolver {
   }
 
   @Mutation('updateColumn')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   update(
     @Args('id') id: number,
     @Args('updateColumnInput')
