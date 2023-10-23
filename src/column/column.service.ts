@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { Column } from '@src/types/graphql';
+import { Column, CreateColumnInput } from '@src/types/graphql';
 import { PrismaService } from '@src/prisma/prisma.service';
 
 @Injectable()
 export class ColumnService {
   constructor(private prisma: PrismaService) {}
-  create(data: Prisma.ColumnCreateInput): Promise<Column> {
+  create(data: CreateColumnInput): Promise<Column> {
+    const { boardId, ...rest } = data;
     return this.prisma.column.create({
       data: {
-        ...data,
+        ...rest,
+        board: {
+          connect: {
+            id: boardId,
+          },
+        },
       },
     });
   }

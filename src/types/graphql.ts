@@ -42,6 +42,7 @@ export class BoardWhereInput {
 
 export class CreateColumnInput {
     title: string;
+    boardId: number;
 }
 
 export class UpdateColumnInput {

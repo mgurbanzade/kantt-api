@@ -10,17 +10,17 @@ import { UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ColumnService } from './column.service';
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
-import { Task } from '@src/types/graphql';
+import { CreateColumnInput, Task } from '@src/types/graphql';
 
 @Resolver('Column')
 export class ColumnResolver {
   constructor(private readonly columnService: ColumnService) {}
 
   @Mutation('createColumn')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   create(
     @Args('createColumnInput')
-    createColumnInput: Prisma.ColumnCreateInput,
+    createColumnInput: CreateColumnInput,
   ) {
     return this.columnService.create(createColumnInput);
   }
