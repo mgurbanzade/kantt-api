@@ -71,6 +71,6 @@ model Task {
   order       Float
   boardId     Int
   columnId    Int
-  column      Column  @relation(fields: [columnId], references: [id])
+  column      Column  @relation(fields: [columnId], references: [id], onDelete: Cascade)
   board       Board   @relation(fields: [boardId], references: [id], onDelete: Cascade)
 }

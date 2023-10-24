@@ -48,7 +48,7 @@ export class ColumnResolver {
   }
 
   @Mutation('removeColumn')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   remove(@Args('id') id: number) {
     return this.columnService.remove({ id });
   }
