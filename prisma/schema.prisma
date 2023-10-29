@@ -33,10 +33,23 @@ model Project {
   progress    Int      @default(0)
   isArchived  Boolean  @default(false)
   authorId    Int?
+  areas       Area[]   @relation("Projects")
   author      User?    @relation(fields: [authorId], references: [id])
   boards      Board[]  @relation("Boards")
   createdAt   DateTime @default(now()) @db.Timestamptz(3)
   updatedAt   DateTime @updatedAt @db.Timestamptz(3)
+}
+
+model Area {
+  id        Int       @id @default(autoincrement())
+  uuid      String    @unique
+  title     String    @db.VarChar(200)
+  projects  Project[] @relation("Projects")
+  parentId  Int?
+  parent    Area?     @relation("SubAreas", fields: [parentId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  subareas  Area[]    @relation("SubAreas")
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
 }
 
 model Board {

@@ -8,6 +8,20 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export class CreateAreaInput {
+    title: string;
+    parentId?: Nullable<number>;
+}
+
+export class UpdateAreaInput {
+    title?: Nullable<string>;
+}
+
+export class AreaWhereInput {
+    id?: Nullable<number>;
+    title?: Nullable<string>;
+}
+
 export class LoginUserInput {
     email: string;
     password: string;
@@ -121,31 +135,55 @@ export class ResetPasswordInput {
     email: string;
 }
 
-export class LoginResponse {
-    accessToken: string;
-    refreshToken: string;
-    user: User;
+export class Area {
+    id?: Nullable<number>;
+    uuid?: Nullable<string>;
+    title?: Nullable<string>;
+    projects?: Nullable<Nullable<Project>[]>;
+    subareas?: Nullable<Nullable<Area>[]>;
+    parentId?: Nullable<number>;
+    parent?: Nullable<Area>;
 }
 
-export class RefreshResponse {
-    user: User;
-    accessToken: string;
-    expSeconds: number;
-}
+export abstract class IQuery {
+    abstract getAllAreas(where?: Nullable<AreaWhereInput>): Nullable<Area>[] | Promise<Nullable<Area>[]>;
 
-export class SignupResponse {
-    user: User;
-}
+    abstract getArea(uuid: string): Nullable<Area> | Promise<Nullable<Area>>;
 
-export class LogoutResponse {
-    success: boolean;
-}
+    abstract getCurrentUser(): GetCurrentUserResponse | Promise<GetCurrentUserResponse>;
 
-export class GetCurrentUserResponse {
-    user?: Nullable<User>;
+    abstract refresh(): RefreshResponse | Promise<RefreshResponse>;
+
+    abstract getAllBoards(where: BoardWhereInput): Nullable<Board>[] | Promise<Nullable<Board>[]>;
+
+    abstract getBoard(id: number): Nullable<Board> | Promise<Nullable<Board>>;
+
+    abstract getAllColumns(where: ColumnWhereInput): Nullable<Column>[] | Promise<Nullable<Column>[]>;
+
+    abstract getColumn(uuid: string): Nullable<Column> | Promise<Nullable<Column>>;
+
+    abstract getAllProjects(where?: Nullable<ProjectWhereInput>): Nullable<Project>[] | Promise<Nullable<Project>[]>;
+
+    abstract getProject(uuid: string): Nullable<Project> | Promise<Nullable<Project>>;
+
+    abstract getAllTasks(where: TaskWhereInput): Nullable<Task>[] | Promise<Nullable<Task>[]>;
+
+    abstract getTask(uuid: string): Nullable<Task> | Promise<Nullable<Task>>;
+
+    abstract getAllUsers(): Nullable<User>[] | Promise<Nullable<User>[]>;
+
+    abstract getUser(where: UserWhereUniqueInput): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract getUserProfile(): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export abstract class IMutation {
+    abstract createArea(createAreaInput: CreateAreaInput): Area | Promise<Area>;
+
+    abstract updateArea(id: number, updateAreaInput: UpdateAreaInput): Area | Promise<Area>;
+
+    abstract removeArea(id: number): Nullable<Area> | Promise<Nullable<Area>>;
+
     abstract login(loginUserInput: LoginUserInput): LoginResponse | Promise<LoginResponse>;
 
     abstract signup(signupUserInput: SignupUserInput): LoginResponse | Promise<LoginResponse>;
@@ -195,32 +233,28 @@ export abstract class IMutation {
     abstract removeUser(id: number): Nullable<User> | Promise<Nullable<User>>;
 }
 
-export abstract class IQuery {
-    abstract getCurrentUser(): GetCurrentUserResponse | Promise<GetCurrentUserResponse>;
+export class LoginResponse {
+    accessToken: string;
+    refreshToken: string;
+    user: User;
+}
 
-    abstract refresh(): RefreshResponse | Promise<RefreshResponse>;
+export class RefreshResponse {
+    user: User;
+    accessToken: string;
+    expSeconds: number;
+}
 
-    abstract getAllBoards(where: BoardWhereInput): Nullable<Board>[] | Promise<Nullable<Board>[]>;
+export class SignupResponse {
+    user: User;
+}
 
-    abstract getBoard(id: number): Nullable<Board> | Promise<Nullable<Board>>;
+export class LogoutResponse {
+    success: boolean;
+}
 
-    abstract getAllColumns(where: ColumnWhereInput): Nullable<Column>[] | Promise<Nullable<Column>[]>;
-
-    abstract getColumn(uuid: string): Nullable<Column> | Promise<Nullable<Column>>;
-
-    abstract getAllProjects(where?: Nullable<ProjectWhereInput>): Nullable<Project>[] | Promise<Nullable<Project>[]>;
-
-    abstract getProject(uuid: string): Nullable<Project> | Promise<Nullable<Project>>;
-
-    abstract getAllTasks(where: TaskWhereInput): Nullable<Task>[] | Promise<Nullable<Task>[]>;
-
-    abstract getTask(uuid: string): Nullable<Task> | Promise<Nullable<Task>>;
-
-    abstract getAllUsers(): Nullable<User>[] | Promise<Nullable<User>[]>;
-
-    abstract getUser(where: UserWhereUniqueInput): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract getUserProfile(): Nullable<User> | Promise<Nullable<User>>;
+export class GetCurrentUserResponse {
+    user?: Nullable<User>;
 }
 
 export class Board {

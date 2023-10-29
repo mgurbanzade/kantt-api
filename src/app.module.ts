@@ -21,6 +21,7 @@ import { OpenAIModule } from './openai/openai.module';
 import { BoardModule } from './board/board.module';
 import { ColumnModule } from './column/column.module';
 import { TaskModule } from './task/task.module';
+import { AreaModule } from './area/area.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { TaskModule } from './task/task.module';
     BoardModule,
     ColumnModule,
     TaskModule,
+    AreaModule,
     AuthModule,
     GoalQueryModule,
     OpenAIModule,

@@ -1,0 +1,34 @@
+type Area {
+  id: Int
+  uuid: String
+  title: String
+  projects: [Project]
+  subareas: [Area]
+  parentId: Int
+  parent: Area
+}
+
+input CreateAreaInput {
+  title: String!
+  parentId: Int
+}
+
+input UpdateAreaInput {
+  title: String
+}
+
+input AreaWhereInput {
+  id: Int
+  title: String
+}
+
+type Query {
+  getAllAreas(where: AreaWhereInput): [Area]!
+  getArea(uuid: String!): Area
+}
+
+type Mutation {
+  createArea(createAreaInput: CreateAreaInput!): Area!
+  updateArea(id: Int!, updateAreaInput: UpdateAreaInput!): Area!
+  removeArea(id: Int!): Area
+}
