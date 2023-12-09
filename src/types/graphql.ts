@@ -20,6 +20,7 @@ export class UpdateAreaInput {
 export class AreaWhereInput {
     id?: Nullable<number>;
     title?: Nullable<string>;
+    parentId?: Nullable<number>;
 }
 
 export class LoginUserInput {
