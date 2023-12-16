@@ -76,7 +76,7 @@ export class HandleGoalQueryInput {
 export class CreateProjectInput {
     title: string;
     description: string;
-    authorId: number;
+    authorId?: Nullable<number>;
 }
 
 export class UpdateProjectInput {
@@ -167,6 +167,8 @@ export abstract class IQuery {
 
     abstract getProject(uuid: string): Nullable<Project> | Promise<Nullable<Project>>;
 
+    abstract getProjectWhere(where?: Nullable<ProjectWhereInput>): Nullable<Project> | Promise<Nullable<Project>>;
+
     abstract getAllTasks(where: TaskWhereInput): Nullable<Task>[] | Promise<Nullable<Task>[]>;
 
     abstract getTask(uuid: string): Nullable<Task> | Promise<Nullable<Task>>;
@@ -211,9 +213,9 @@ export abstract class IMutation {
 
     abstract handleGoalQuery(handleGoalQueryInput: HandleGoalQueryInput): Nullable<HandleGoalQueryPayload> | Promise<Nullable<HandleGoalQueryPayload>>;
 
-    abstract createProject(createProjectInput: CreateProjectInput): Project | Promise<Project>;
+    abstract createProject(createProjectInput: CreateProjectInput, areaIds?: Nullable<Nullable<number>[]>): Project | Promise<Project>;
 
-    abstract updateProject(id: number, updateProjectInput: UpdateProjectInput): Project | Promise<Project>;
+    abstract updateProject(id: number, updateProjectInput: UpdateProjectInput, areaIds?: Nullable<Nullable<number>[]>): Project | Promise<Project>;
 
     abstract removeProject(id: number): Nullable<Project> | Promise<Nullable<Project>>;
 
@@ -298,6 +300,7 @@ export class Project {
     isArchived?: Nullable<boolean>;
     author?: Nullable<User>;
     boards?: Nullable<Nullable<Board>[]>;
+    areas?: Nullable<Nullable<Area>[]>;
 }
 
 export class Task {

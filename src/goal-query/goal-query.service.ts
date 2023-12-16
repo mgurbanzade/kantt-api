@@ -42,13 +42,16 @@ export class GoalQueryService {
 
       console.log(responseTextArray);
 
-      const project = await this.projectService.create({
-        uuid: uuidv4(),
-        title: projectTitle,
-        description: projectTitle,
-        isArchived: false,
-        progress: 0,
-      });
+      const project = await this.projectService.create(
+        {
+          uuid: uuidv4(),
+          title: projectTitle,
+          description: projectTitle,
+          isArchived: false,
+          progress: 0,
+        },
+        [],
+      );
 
       const board = await this.boardService.create({
         uuid: uuidv4(),

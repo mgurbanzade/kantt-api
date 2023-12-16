@@ -7,12 +7,13 @@ type Project {
   isArchived: Boolean
   author: User
   boards: [Board]
+  areas: [Area]
 }
 
 input CreateProjectInput {
   title: String!
   description: String!
-  authorId: Int!
+  authorId: Int
 }
 
 input UpdateProjectInput {
@@ -33,10 +34,18 @@ input ProjectWhereInput {
 type Query {
   getAllProjects(where: ProjectWhereInput): [Project]!
   getProject(uuid: String!): Project
+  getProjectWhere(where: ProjectWhereInput): Project
 }
 
 type Mutation {
-  createProject(createProjectInput: CreateProjectInput!): Project!
-  updateProject(id: Int!, updateProjectInput: UpdateProjectInput!): Project!
+  createProject(
+    createProjectInput: CreateProjectInput!
+    areaIds: [Int]
+  ): Project!
+  updateProject(
+    id: Int!
+    updateProjectInput: UpdateProjectInput!
+    areaIds: [Int]
+  ): Project!
   removeProject(id: Int!): Project
 }

@@ -6,24 +6,24 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+// import { UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { Board, User } from '@src/types/graphql';
+import { Area, Board, User } from '@src/types/graphql';
 import { ProjectService } from './project.service';
-import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
-import { AuthorGuard } from './guards/author.guard';
+// import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
+// import { AuthorGuard } from './guards/author.guard';
 
 @Resolver('Project')
 export class ProjectResolver {
   constructor(private readonly projectService: ProjectService) {}
 
   @Mutation('createProject')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   create(
-    @Args('createProjectInput')
-    createProjectInput: Prisma.ProjectCreateInput,
+    @Args('createProjectInput') createProjectInput: Prisma.ProjectCreateInput,
+    @Args('areaIds') areaIds: number[],
   ) {
-    return this.projectService.create(createProjectInput);
+    return this.projectService.create(createProjectInput, areaIds);
   }
 
   @Query('getAllProjects')
@@ -38,14 +38,21 @@ export class ProjectResolver {
     return this.projectService.findOne({ uuid });
   }
 
+  @Query('getProjectWhere')
+  // @UseGuards(JwtAuthGuard)
+  findOneWhere(@Args('where') where: Prisma.ProjectWhereUniqueInput) {
+    return this.projectService.findOne(where);
+  }
+
   @Mutation('updateProject')
   // @UseGuards(JwtAuthGuard, AuthorGuard)
   update(
     @Args('id') id: number,
     @Args('updateProjectInput')
     updateProjectInput: Prisma.ProjectUpdateInput,
+    @Args('areaIds') areaIds: number[],
   ) {
-    return this.projectService.update(id, updateProjectInput);
+    return this.projectService.update(id, updateProjectInput, areaIds);
   }
 
   @Mutation('removeProject')
@@ -64,5 +71,10 @@ export class ProjectResolver {
   @ResolveField(() => [Board])
   boards(@Parent() project) {
     return this.projectService.boards(project.id);
+  }
+
+  @ResolveField(() => [Area])
+  areas(@Parent() project) {
+    return this.projectService.areas(project.id);
   }
 }

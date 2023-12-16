@@ -7,11 +7,14 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class ProjectService {
   constructor(private prisma: PrismaService) {}
-  create(data: Prisma.ProjectCreateInput): Promise<Project> {
+  create(data: Prisma.ProjectCreateInput, areaIds: number[]): Promise<Project> {
     return this.prisma.project.create({
       data: {
         ...data,
         uuid: uuidv4(),
+        areas: {
+          connect: areaIds.map((id) => ({ id })),
+        },
       },
     });
   }
@@ -28,10 +31,19 @@ export class ProjectService {
     });
   }
 
-  update(id: number, data: Prisma.ProjectUpdateInput): Promise<Project> {
+  update(
+    id: number,
+    data: Prisma.ProjectUpdateInput,
+    areaIds: number[],
+  ): Promise<Project> {
     return this.prisma.project.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        areas: {
+          set: areaIds.map((id) => ({ id })),
+        },
+      },
     });
   }
 
@@ -58,5 +70,15 @@ export class ProjectService {
         projectId,
       },
     });
+  }
+
+  areas(projectId: number) {
+    return this.prisma.project
+      .findUnique({
+        where: {
+          id: projectId,
+        },
+      })
+      .areas();
   }
 }
