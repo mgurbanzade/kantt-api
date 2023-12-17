@@ -96,10 +96,11 @@ export class ProjectWhereInput {
 
 export class CreateTaskInput {
     title: string;
-    description: string;
-    order: number;
-    boardId: number;
-    columnId: number;
+    description?: Nullable<string>;
+    order?: Nullable<number>;
+    boardId?: Nullable<number>;
+    columnId?: Nullable<number>;
+    projectId?: Nullable<number>;
 }
 
 export class UpdateTaskInput {
@@ -107,6 +108,7 @@ export class UpdateTaskInput {
     description?: Nullable<string>;
     columnId?: Nullable<number>;
     order?: Nullable<number>;
+    isCompleted?: Nullable<boolean>;
 }
 
 export class TaskWhereInput {
@@ -114,6 +116,7 @@ export class TaskWhereInput {
     title?: Nullable<string>;
     description?: Nullable<string>;
     columnId?: Nullable<number>;
+    projectId?: Nullable<number>;
 }
 
 export class CreateUserInput {
@@ -301,6 +304,7 @@ export class Project {
     author?: Nullable<User>;
     boards?: Nullable<Nullable<Board>[]>;
     areas?: Nullable<Nullable<Area>[]>;
+    tasks?: Nullable<Nullable<Task>[]>;
 }
 
 export class Task {
@@ -312,6 +316,9 @@ export class Task {
     board?: Nullable<Board>;
     column?: Nullable<Column>;
     columnId?: Nullable<number>;
+    project?: Nullable<Project>;
+    projectId?: Nullable<number>;
+    isCompleted?: Nullable<boolean>;
 }
 
 export class User {

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 // import { UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { Area, Board, User } from '@src/types/graphql';
+import { Area, Board, User, Task } from '@src/types/graphql';
 import { ProjectService } from './project.service';
 // import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 // import { AuthorGuard } from './guards/author.guard';
@@ -76,5 +76,10 @@ export class ProjectResolver {
   @ResolveField(() => [Area])
   areas(@Parent() project) {
     return this.projectService.areas(project.id);
+  }
+
+  @ResolveField(() => [Task])
+  tasks(@Parent() project) {
+    return this.projectService.tasks(project.id);
   }
 }

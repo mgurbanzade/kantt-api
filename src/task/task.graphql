@@ -7,14 +7,18 @@ type Task {
   board: Board
   column: Column
   columnId: Int
+  project: Project
+  projectId: Int
+  isCompleted: Boolean
 }
 
 input CreateTaskInput {
   title: String!
-  description: String!
-  order: Float!
-  boardId: Int!
-  columnId: Int!
+  description: String
+  order: Float
+  boardId: Int
+  columnId: Int
+  projectId: Int
 }
 
 input UpdateTaskInput {
@@ -22,6 +26,7 @@ input UpdateTaskInput {
   description: String
   columnId: Int
   order: Float
+  isCompleted: Boolean
 }
 
 input TaskWhereInput {
@@ -29,6 +34,7 @@ input TaskWhereInput {
   title: String
   description: String
   columnId: Int
+  projectId: Int
 }
 
 type Query {

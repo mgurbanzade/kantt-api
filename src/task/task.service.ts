@@ -8,21 +8,22 @@ import { v4 as uuidv4 } from 'uuid';
 export class TaskService {
   constructor(private prisma: PrismaService) {}
   create(createTaskInput: CreateTaskInput): Promise<Task> {
-    const { boardId, columnId, ...rest } = createTaskInput;
+    const { boardId, columnId, projectId, ...rest } = createTaskInput;
+    const dynamicBoard = boardId ? { board: { connect: { id: boardId } } } : {};
+    const dynamicColumn = columnId
+      ? { column: { connect: { id: columnId } } }
+      : {};
+    const dynamicProject = projectId
+      ? { project: { connect: { id: projectId } } }
+      : {};
+
     return this.prisma.task.create({
       data: {
         ...rest,
         uuid: uuidv4(),
-        board: {
-          connect: {
-            id: boardId,
-          },
-        },
-        column: {
-          connect: {
-            id: columnId,
-          },
-        },
+        ...dynamicBoard,
+        ...dynamicColumn,
+        ...dynamicProject,
       },
     });
   }

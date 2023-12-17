@@ -81,4 +81,15 @@ export class ProjectService {
       })
       .areas();
   }
+
+  tasks(projectId: number) {
+    return this.prisma.task.findMany({
+      where: {
+        projectId,
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  }
 }

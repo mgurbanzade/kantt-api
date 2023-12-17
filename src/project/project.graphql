@@ -8,6 +8,7 @@ type Project {
   author: User
   boards: [Board]
   areas: [Area]
+  tasks: [Task]
 }
 
 input CreateProjectInput {
