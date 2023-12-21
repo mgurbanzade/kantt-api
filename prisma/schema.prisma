@@ -91,6 +91,6 @@ model Task {
   projectId   Int?
   isCompleted Boolean  @default(false)
   project     Project? @relation("Project", fields: [projectId], references: [id])
-  column      Column?  @relation(fields: [columnId], references: [id], onDelete: Cascade)
-  board       Board?   @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  column      Column?  @relation(fields: [columnId], references: [id], onDelete: SetNull)
+  board       Board?   @relation(fields: [boardId], references: [id], onDelete: SetNull)
 }

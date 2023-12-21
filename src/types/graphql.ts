@@ -36,8 +36,8 @@ export class SignupUserInput {
 
 export class CreateBoardInput {
     title: string;
-    description: string;
-    authorId: number;
+    description?: Nullable<string>;
+    authorId?: Nullable<number>;
 }
 
 export class UpdateBoardInput {
@@ -196,7 +196,7 @@ export abstract class IMutation {
 
     abstract logout(): LogoutResponse | Promise<LogoutResponse>;
 
-    abstract createBoard(createBoardInput: CreateBoardInput): Board | Promise<Board>;
+    abstract createBoard(createBoardInput: CreateBoardInput, projectId: number): Board | Promise<Board>;
 
     abstract updateBoard(id: number, updateBoardInput: UpdateBoardInput): Board | Promise<Board>;
 

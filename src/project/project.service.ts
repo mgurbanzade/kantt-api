@@ -15,6 +15,25 @@ export class ProjectService {
         areas: {
           connect: areaIds.map((id) => ({ id })),
         },
+        boards: {
+          create: {
+            uuid: uuidv4(),
+            title: 'Board',
+            columns: {
+              create: [
+                {
+                  title: 'Todo',
+                },
+                {
+                  title: 'In Progress',
+                },
+                {
+                  title: 'Done',
+                },
+              ],
+            },
+          },
+        },
       },
     });
   }

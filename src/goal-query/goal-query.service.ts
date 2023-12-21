@@ -53,32 +53,35 @@ export class GoalQueryService {
         [],
       );
 
-      const board = await this.boardService.create({
-        uuid: uuidv4(),
-        title: projectTitle,
-        description: projectTitle,
-        isArchived: false,
-        project: {
-          connect: {
-            id: project.id,
+      const board = await this.boardService.create(
+        {
+          uuid: uuidv4(),
+          title: projectTitle,
+          description: projectTitle,
+          isArchived: false,
+          project: {
+            connect: {
+              id: project.id,
+            },
+          },
+          columns: {
+            createMany: {
+              data: [
+                {
+                  title: 'To do',
+                },
+                {
+                  title: 'In progress',
+                },
+                {
+                  title: 'Done',
+                },
+              ],
+            },
           },
         },
-        columns: {
-          createMany: {
-            data: [
-              {
-                title: 'To do',
-              },
-              {
-                title: 'In progress',
-              },
-              {
-                title: 'Done',
-              },
-            ],
-          },
-        },
-      });
+        project?.id,
+      );
 
       const columnId = board.columns[0].id;
       const tasksFromOpenAi = microSteps.map((microStep, idx) => ({

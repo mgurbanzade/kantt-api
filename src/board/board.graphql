@@ -11,8 +11,8 @@ type Board {
 
 input CreateBoardInput {
   title: String!
-  description: String!
-  authorId: Int!
+  description: String
+  authorId: Int
 }
 
 input UpdateBoardInput {
@@ -36,7 +36,7 @@ type Query {
 }
 
 type Mutation {
-  createBoard(createBoardInput: CreateBoardInput!): Board!
+  createBoard(createBoardInput: CreateBoardInput!, projectId: Int!): Board!
   updateBoard(id: Int!, updateBoardInput: UpdateBoardInput!): Board!
   removeBoard(id: Int!): Board
 }

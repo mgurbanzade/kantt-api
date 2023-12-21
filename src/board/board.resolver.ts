@@ -17,12 +17,13 @@ export class BoardResolver {
   constructor(private readonly boardService: BoardService) {}
 
   @Mutation('createBoard')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   create(
     @Args('createBoardInput')
     createBoardInput: Prisma.BoardCreateInput,
+    @Args('projectId') projectId: number,
   ) {
-    return this.boardService.create(createBoardInput);
+    return this.boardService.create(createBoardInput, projectId);
   }
 
   @Query('getAllBoards')
@@ -48,7 +49,7 @@ export class BoardResolver {
   }
 
   @Mutation('removeBoard')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   remove(@Args('id') id: number) {
     return this.boardService.remove({ id });
   }

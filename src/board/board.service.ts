@@ -7,11 +7,54 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class BoardService {
   constructor(private prisma: PrismaService) {}
-  create(data: Prisma.BoardCreateInput): Promise<Board> {
+  async create(
+    data: Prisma.BoardCreateInput,
+    projectId: number,
+  ): Promise<Board> {
+    const project = await this.prisma.project.findUnique({
+      where: {
+        id: projectId,
+      },
+      include: {
+        tasks: true,
+        boards: true,
+      },
+    });
+
+    if (project.boards.length > 0) {
+      throw new Error('Project may have only 1 board');
+    }
+
+    const taskIds = project.tasks.map((task) => task.id);
+
     return this.prisma.board.create({
       data: {
         ...data,
         uuid: uuidv4(),
+        project: {
+          connect: {
+            id: projectId,
+          },
+        },
+        tasks: {
+          connect: taskIds.map((id) => ({ id })),
+        },
+        columns: {
+          create: [
+            {
+              title: 'To do',
+              tasks: {
+                connect: taskIds.map((id) => ({ id })),
+              },
+            },
+            {
+              title: 'In progress',
+            },
+            {
+              title: 'Done',
+            },
+          ],
+        },
       },
       include: {
         columns: true,
