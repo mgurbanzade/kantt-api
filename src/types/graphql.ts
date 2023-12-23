@@ -91,6 +91,7 @@ export class ProjectWhereInput {
     title?: Nullable<string>;
     description?: Nullable<string>;
     progress?: Nullable<number>;
+    parentId?: Nullable<number>;
     isArchived?: Nullable<boolean>;
 }
 
@@ -101,6 +102,7 @@ export class CreateTaskInput {
     boardId?: Nullable<number>;
     columnId?: Nullable<number>;
     projectId?: Nullable<number>;
+    dueDate?: Nullable<DateTime>;
 }
 
 export class UpdateTaskInput {
@@ -109,6 +111,7 @@ export class UpdateTaskInput {
     columnId?: Nullable<number>;
     order?: Nullable<number>;
     isCompleted?: Nullable<boolean>;
+    dueDate?: Nullable<DateTime>;
 }
 
 export class TaskWhereInput {
@@ -216,7 +219,7 @@ export abstract class IMutation {
 
     abstract handleGoalQuery(handleGoalQueryInput: HandleGoalQueryInput): Nullable<HandleGoalQueryPayload> | Promise<Nullable<HandleGoalQueryPayload>>;
 
-    abstract createProject(createProjectInput: CreateProjectInput, areaIds?: Nullable<Nullable<number>[]>): Project | Promise<Project>;
+    abstract createProject(createProjectInput: CreateProjectInput, areaIds?: Nullable<Nullable<number>[]>, parentId?: Nullable<number>): Project | Promise<Project>;
 
     abstract updateProject(id: number, updateProjectInput: UpdateProjectInput, areaIds?: Nullable<Nullable<number>[]>): Project | Promise<Project>;
 
@@ -305,6 +308,8 @@ export class Project {
     boards?: Nullable<Nullable<Board>[]>;
     areas?: Nullable<Nullable<Area>[]>;
     tasks?: Nullable<Nullable<Task>[]>;
+    subprojects?: Nullable<Nullable<Project>[]>;
+    parentId?: Nullable<number>;
 }
 
 export class Task {
@@ -318,6 +323,7 @@ export class Task {
     columnId?: Nullable<number>;
     project?: Nullable<Project>;
     projectId?: Nullable<number>;
+    dueDate?: Nullable<DateTime>;
     isCompleted?: Nullable<boolean>;
 }
 
@@ -330,5 +336,6 @@ export class User {
 }
 
 export type AccountType = any;
+export type DateTime = any;
 export type UserWhereUniqueInput = any;
 type Nullable<T> = T | null;

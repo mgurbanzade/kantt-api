@@ -7,7 +7,7 @@ import {
   Parent,
 } from '@nestjs/graphql';
 // import { UseGuards } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, Project } from '@prisma/client';
 import { Area, Board, User, Task } from '@src/types/graphql';
 import { ProjectService } from './project.service';
 // import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
@@ -22,8 +22,9 @@ export class ProjectResolver {
   create(
     @Args('createProjectInput') createProjectInput: Prisma.ProjectCreateInput,
     @Args('areaIds') areaIds: number[],
+    @Args('parentId') parentId?: number,
   ) {
-    return this.projectService.create(createProjectInput, areaIds);
+    return this.projectService.create(createProjectInput, areaIds, parentId);
   }
 
   @Query('getAllProjects')
@@ -81,5 +82,10 @@ export class ProjectResolver {
   @ResolveField(() => [Task])
   tasks(@Parent() project) {
     return this.projectService.tasks(project.id);
+  }
+
+  @ResolveField(() => [Area])
+  subprojects(@Parent() project: Project) {
+    return this.projectService.subprojects(project.id);
   }
 }

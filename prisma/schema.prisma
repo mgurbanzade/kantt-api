@@ -26,22 +26,23 @@ model User {
 }
 
 model Project {
-  id          Int       @id @default(autoincrement())
-  uuid        String    @unique
-  title       String    @db.VarChar(200)
+  id          Int        @id @default(autoincrement())
+  uuid        String     @unique
+  title       String     @db.VarChar(200)
   description String
-  progress    Int       @default(0)
-  isArchived  Boolean   @default(false)
+  progress    Int        @default(0)
+  isArchived  Boolean    @default(false)
   authorId    Int?
-  areas       Area[]    @relation("Projects")
-  author      User?     @relation(fields: [authorId], references: [id])
-  boards      Board[]   @relation("Boards")
+  areas       Area[]     @relation("Projects")
+  author      User?      @relation(fields: [authorId], references: [id])
+  boards      Board[]    @relation("Boards")
   parentId    Int?
-  parent      Project?  @relation("SubProjects", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  subprojects Project[] @relation("SubProjects")
-  tasks       Task[]    @relation("Project")
-  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
-  updatedAt   DateTime  @updatedAt @db.Timestamptz(3)
+  parent      Project?   @relation("SubProjects", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subprojects Project[]  @relation("SubProjects")
+  tasks       Task[]     @relation("Project")
+  resources   Resource[]
+  createdAt   DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime   @updatedAt @db.Timestamptz(3)
 }
 
 model Area {
@@ -54,6 +55,20 @@ model Area {
   subareas  Area[]    @relation("SubAreas")
   createdAt DateTime  @default(now()) @db.Timestamptz(3)
   updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+}
+
+model Resource {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique
+  title     String   @db.VarChar(200)
+  url       String   @db.VarChar(200)
+  body      String?
+  projectId Int
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  taskId    Int
+  task      Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
 }
 
 model Board {
@@ -81,16 +96,21 @@ model Column {
 }
 
 model Task {
-  id          Int      @id @default(autoincrement())
-  uuid        String   @unique
-  title       String   @db.VarChar(200)
+  id          Int        @id @default(autoincrement())
+  uuid        String     @unique
+  title       String     @db.VarChar(200)
   description String?
   order       Float?
   boardId     Int?
   columnId    Int?
   projectId   Int?
-  isCompleted Boolean  @default(false)
-  project     Project? @relation("Project", fields: [projectId], references: [id])
-  column      Column?  @relation(fields: [columnId], references: [id], onDelete: SetNull)
-  board       Board?   @relation(fields: [boardId], references: [id], onDelete: SetNull)
+  isCompleted Boolean    @default(false)
+  isArchived  Boolean    @default(false)
+  project     Project?   @relation("Project", fields: [projectId], references: [id])
+  column      Column?    @relation(fields: [columnId], references: [id], onDelete: SetNull)
+  board       Board?     @relation(fields: [boardId], references: [id], onDelete: SetNull)
+  resources   Resource[]
+  dueDate     DateTime?  @db.Timestamptz(3)
+  createdAt   DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime   @updatedAt @db.Timestamptz(3)
 }

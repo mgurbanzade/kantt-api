@@ -44,6 +44,21 @@ CREATE TABLE "Area" (
 );
 
 -- CreateTable
+CREATE TABLE "Resource" (
+    "id" SERIAL NOT NULL,
+    "uuid" TEXT NOT NULL,
+    "title" VARCHAR(200) NOT NULL,
+    "url" VARCHAR(200) NOT NULL,
+    "body" TEXT,
+    "projectId" INTEGER NOT NULL,
+    "taskId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(3) NOT NULL,
+
+    CONSTRAINT "Resource_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Board" (
     "id" SERIAL NOT NULL,
     "uuid" TEXT NOT NULL,
@@ -79,6 +94,10 @@ CREATE TABLE "Task" (
     "columnId" INTEGER,
     "projectId" INTEGER,
     "isCompleted" BOOLEAN NOT NULL DEFAULT false,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
+    "dueDate" TIMESTAMPTZ(3),
+    "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(3) NOT NULL,
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
 );
@@ -102,6 +121,9 @@ CREATE UNIQUE INDEX "Project_uuid_key" ON "Project"("uuid");
 CREATE UNIQUE INDEX "Area_uuid_key" ON "Area"("uuid");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Resource_uuid_key" ON "Resource"("uuid");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Board_uuid_key" ON "Board"("uuid");
 
 -- CreateIndex
@@ -121,6 +143,12 @@ ALTER TABLE "Project" ADD CONSTRAINT "Project_parentId_fkey" FOREIGN KEY ("paren
 
 -- AddForeignKey
 ALTER TABLE "Area" ADD CONSTRAINT "Area_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Area"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Resource" ADD CONSTRAINT "Resource_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Resource" ADD CONSTRAINT "Resource_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Board" ADD CONSTRAINT "Board_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;

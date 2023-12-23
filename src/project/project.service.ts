@@ -7,13 +7,26 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class ProjectService {
   constructor(private prisma: PrismaService) {}
-  create(data: Prisma.ProjectCreateInput, areaIds: number[]): Promise<Project> {
+  create(
+    data: Prisma.ProjectCreateInput,
+    areaIds: number[],
+    parentId?: number,
+  ): Promise<Project> {
+    const dynamicAreas = areaIds
+      ? { connect: areaIds.map((id) => ({ id })) }
+      : {};
+
+    const dynamicParent = parentId ? { connect: { id: parentId } } : {};
+
     return this.prisma.project.create({
       data: {
         ...data,
         uuid: uuidv4(),
+        parent: {
+          ...dynamicParent,
+        },
         areas: {
-          connect: areaIds.map((id) => ({ id })),
+          ...dynamicAreas,
         },
         boards: {
           create: {
@@ -110,5 +123,14 @@ export class ProjectService {
         id: 'asc',
       },
     });
+  }
+
+  subprojects(id: number) {
+    if (!id) return null;
+    return this.prisma.project
+      .findUnique({
+        where: { id },
+      })
+      .subprojects();
   }
 }

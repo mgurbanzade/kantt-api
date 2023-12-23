@@ -1,3 +1,5 @@
+scalar DateTime
+
 type Task {
   id: Int
   uuid: String
@@ -9,6 +11,7 @@ type Task {
   columnId: Int
   project: Project
   projectId: Int
+  dueDate: DateTime
   isCompleted: Boolean
 }
 
@@ -19,6 +22,7 @@ input CreateTaskInput {
   boardId: Int
   columnId: Int
   projectId: Int
+  dueDate: DateTime
 }
 
 input UpdateTaskInput {
@@ -27,6 +31,7 @@ input UpdateTaskInput {
   columnId: Int
   order: Float
   isCompleted: Boolean
+  dueDate: DateTime
 }
 
 input TaskWhereInput {

@@ -51,6 +51,7 @@ export class GoalQueryService {
           progress: 0,
         },
         [],
+        null,
       );
 
       const board = await this.boardService.create(

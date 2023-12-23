@@ -9,6 +9,8 @@ type Project {
   boards: [Board]
   areas: [Area]
   tasks: [Task]
+  subprojects: [Project]
+  parentId: Int
 }
 
 input CreateProjectInput {
@@ -29,6 +31,7 @@ input ProjectWhereInput {
   title: String
   description: String
   progress: Int
+  parentId: Int
   isArchived: Boolean
 }
 
@@ -42,6 +45,7 @@ type Mutation {
   createProject(
     createProjectInput: CreateProjectInput!
     areaIds: [Int]
+    parentId: Int
   ): Project!
   updateProject(
     id: Int!
