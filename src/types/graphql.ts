@@ -95,6 +95,33 @@ export class ProjectWhereInput {
     isArchived?: Nullable<boolean>;
 }
 
+export class CreateResourceInput {
+    title?: Nullable<string>;
+    contentJSON: Json;
+    contentHTML: string;
+}
+
+export class ConnectResourceInput {
+    projectId?: Nullable<number>;
+    taskId?: Nullable<number>;
+    parentId?: Nullable<number>;
+}
+
+export class UpdateResourceInput {
+    title?: Nullable<string>;
+    contentJSON?: Nullable<Json>;
+    contentHTML?: Nullable<string>;
+}
+
+export class ResourceWhereInput {
+    id?: Nullable<number>;
+    uuid?: Nullable<string>;
+    isRoot?: Nullable<boolean>;
+    projectId?: Nullable<number>;
+    taskId?: Nullable<number>;
+    parentId?: Nullable<number>;
+}
+
 export class CreateTaskInput {
     title: string;
     description?: Nullable<string>;
@@ -175,6 +202,10 @@ export abstract class IQuery {
 
     abstract getProjectWhere(where?: Nullable<ProjectWhereInput>): Nullable<Project> | Promise<Nullable<Project>>;
 
+    abstract getAllResources(where: ResourceWhereInput): Nullable<Resource>[] | Promise<Nullable<Resource>[]>;
+
+    abstract getResource(where: ResourceWhereInput): Nullable<Resource> | Promise<Nullable<Resource>>;
+
     abstract getAllTasks(where: TaskWhereInput): Nullable<Task>[] | Promise<Nullable<Task>[]>;
 
     abstract getTask(uuid: string): Nullable<Task> | Promise<Nullable<Task>>;
@@ -224,6 +255,12 @@ export abstract class IMutation {
     abstract updateProject(id: number, updateProjectInput: UpdateProjectInput, areaIds?: Nullable<Nullable<number>[]>): Project | Promise<Project>;
 
     abstract removeProject(id: number): Nullable<Project> | Promise<Nullable<Project>>;
+
+    abstract createResource(createResourceInput: CreateResourceInput, connectResourceInput: ConnectResourceInput): Resource | Promise<Resource>;
+
+    abstract updateResource(id: number, updateResourceInput: UpdateResourceInput): Resource | Promise<Resource>;
+
+    abstract removeResource(id: number): Nullable<Resource> | Promise<Nullable<Resource>>;
 
     abstract createTask(createTaskInput: CreateTaskInput): Task | Promise<Task>;
 
@@ -312,6 +349,22 @@ export class Project {
     parentId?: Nullable<number>;
 }
 
+export class Resource {
+    id?: Nullable<number>;
+    uuid?: Nullable<string>;
+    title?: Nullable<string>;
+    project?: Nullable<Project>;
+    projectId?: Nullable<number>;
+    taskId?: Nullable<number>;
+    task?: Nullable<Task>;
+    contentJSON?: Nullable<Json>;
+    contentHTML?: Nullable<string>;
+    subResources?: Nullable<Nullable<Resource>[]>;
+    parentId?: Nullable<number>;
+    parent?: Nullable<Resource>;
+    isRoot?: Nullable<boolean>;
+}
+
 export class Task {
     id?: Nullable<number>;
     uuid?: Nullable<string>;
@@ -336,6 +389,7 @@ export class User {
 }
 
 export type AccountType = any;
+export type Json = any;
 export type DateTime = any;
 export type UserWhereUniqueInput = any;
 type Nullable<T> = T | null;

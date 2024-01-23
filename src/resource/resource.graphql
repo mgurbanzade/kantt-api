@@ -1,0 +1,58 @@
+scalar Json
+
+type Resource {
+  id: Int
+  uuid: String
+  title: String
+  project: Project
+  projectId: Int
+  taskId: Int
+  task: Task
+  contentJSON: Json
+  contentHTML: String
+  subResources: [Resource]
+  parentId: Int
+  parent: Resource
+  isRoot: Boolean
+}
+
+input CreateResourceInput {
+  title: String
+  contentJSON: Json!
+  contentHTML: String!
+}
+
+input ConnectResourceInput {
+  projectId: Int
+  taskId: Int
+  parentId: Int
+}
+
+input UpdateResourceInput {
+  title: String
+  contentJSON: Json
+  contentHTML: String
+}
+
+input ResourceWhereInput {
+  id: Int
+  uuid: String
+  isRoot: Boolean
+  projectId: Int
+  taskId: Int
+  parentId: Int
+}
+
+type Query {
+  getAllResources(where: ResourceWhereInput!): [Resource]!
+  getResource(where: ResourceWhereInput!): Resource
+}
+
+type Mutation {
+  createResource(
+    createResourceInput: CreateResourceInput!
+    connectResourceInput: ConnectResourceInput!
+  ): Resource!
+  updateResource(id: Int!, updateResourceInput: UpdateResourceInput!): Resource!
+  removeResource(id: Int!): Resource
+}

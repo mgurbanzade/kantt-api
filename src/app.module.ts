@@ -22,6 +22,7 @@ import { BoardModule } from './board/board.module';
 import { ColumnModule } from './column/column.module';
 import { TaskModule } from './task/task.module';
 import { AreaModule } from './area/area.module';
+import { ResourceModule } from './resource/resource.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { AreaModule } from './area/area.module';
     BoardModule,
     ColumnModule,
     TaskModule,
+    ResourceModule,
     AreaModule,
     AuthModule,
     GoalQueryModule,

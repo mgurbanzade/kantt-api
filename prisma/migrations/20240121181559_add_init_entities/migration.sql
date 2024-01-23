@@ -47,11 +47,13 @@ CREATE TABLE "Area" (
 CREATE TABLE "Resource" (
     "id" SERIAL NOT NULL,
     "uuid" TEXT NOT NULL,
-    "title" VARCHAR(200) NOT NULL,
-    "url" VARCHAR(200) NOT NULL,
-    "body" TEXT,
-    "projectId" INTEGER NOT NULL,
-    "taskId" INTEGER NOT NULL,
+    "title" VARCHAR(200),
+    "projectId" INTEGER,
+    "taskId" INTEGER,
+    "parentId" INTEGER,
+    "isRoot" BOOLEAN NOT NULL DEFAULT false,
+    "contentJSON" JSONB,
+    "contentHTML" TEXT,
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
 
@@ -124,6 +126,12 @@ CREATE UNIQUE INDEX "Area_uuid_key" ON "Area"("uuid");
 CREATE UNIQUE INDEX "Resource_uuid_key" ON "Resource"("uuid");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Resource_projectId_key" ON "Resource"("projectId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Resource_taskId_key" ON "Resource"("taskId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Board_uuid_key" ON "Board"("uuid");
 
 -- CreateIndex
@@ -149,6 +157,9 @@ ALTER TABLE "Resource" ADD CONSTRAINT "Resource_projectId_fkey" FOREIGN KEY ("pr
 
 -- AddForeignKey
 ALTER TABLE "Resource" ADD CONSTRAINT "Resource_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Resource" ADD CONSTRAINT "Resource_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Resource"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Board" ADD CONSTRAINT "Board_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
