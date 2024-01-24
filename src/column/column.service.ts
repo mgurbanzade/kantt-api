@@ -58,6 +58,7 @@ export class ColumnService {
     return this.prisma.task.findMany({
       where: {
         columnId,
+        isArchived: false,
       },
     });
   }

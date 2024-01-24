@@ -24,6 +24,12 @@ export class TaskResolver {
     return this.taskService.findAll(where);
   }
 
+  @Query('getArchivedTasks')
+  // @UseGuards(JwtAuthGuard)
+  findArchived() {
+    return this.taskService.findArchived();
+  }
+
   @Query('getTask')
   @UseGuards(JwtAuthGuard)
   findOne(@Args('uuid') uuid: string) {
@@ -44,6 +50,18 @@ export class TaskResolver {
   // @UseGuards(JwtAuthGuard)
   remove(@Args('id') id: number) {
     return this.taskService.remove({ id });
+  }
+
+  @Mutation('archiveTask')
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  archive(@Args('id') id: number) {
+    return this.taskService.archive(id);
+  }
+
+  @Mutation('unarchiveTask')
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  unarchive(@Args('id') id: number) {
+    return this.taskService.unarchive(id);
   }
 
   // Fields

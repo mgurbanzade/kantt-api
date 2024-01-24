@@ -46,15 +46,16 @@ model Project {
 }
 
 model Area {
-  id        Int       @id @default(autoincrement())
-  uuid      String    @unique
-  title     String    @db.VarChar(200)
-  projects  Project[] @relation("Projects")
-  parentId  Int?
-  parent    Area?     @relation("SubAreas", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  subareas  Area[]    @relation("SubAreas")
-  createdAt DateTime  @default(now()) @db.Timestamptz(3)
-  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  id         Int       @id @default(autoincrement())
+  uuid       String    @unique
+  title      String    @db.VarChar(200)
+  projects   Project[] @relation("Projects")
+  parentId   Int?
+  parent     Area?     @relation("SubAreas", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subareas   Area[]    @relation("SubAreas")
+  isArchived Boolean   @default(false)
+  createdAt  DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime  @updatedAt @db.Timestamptz(3)
 }
 
 model Resource {
@@ -71,6 +72,7 @@ model Resource {
   isRoot       Boolean    @default(false)
   contentJSON  Json?
   contentHTML  String?
+  isArchived   Boolean    @default(false)
   createdAt    DateTime   @default(now()) @db.Timestamptz(3)
   updatedAt    DateTime   @updatedAt @db.Timestamptz(3)
 }

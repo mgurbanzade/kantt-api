@@ -13,6 +13,7 @@ type Task {
   projectId: Int
   dueDate: DateTime
   isCompleted: Boolean
+  isArchived: Boolean
 }
 
 input CreateTaskInput {
@@ -45,10 +46,13 @@ input TaskWhereInput {
 type Query {
   getAllTasks(where: TaskWhereInput!): [Task]!
   getTask(uuid: String!): Task
+  getArchivedTasks: [Task]!
 }
 
 type Mutation {
   createTask(createTaskInput: CreateTaskInput!): Task!
   updateTask(id: Int!, updateTaskInput: UpdateTaskInput!): Task!
   removeTask(id: Int!): Task
+  archiveTask(id: Int!): Task
+  unarchiveTask(id: Int!): Task
 }

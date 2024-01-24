@@ -33,6 +33,12 @@ export class ProjectResolver {
     return this.projectService.findAll(where);
   }
 
+  @Query('getArchivedProjects')
+  // @UseGuards(JwtAuthGuard)
+  findArchived() {
+    return this.projectService.findArchived();
+  }
+
   @Query('getProject')
   // @UseGuards(JwtAuthGuard)
   findOne(@Args('uuid') uuid: string) {
@@ -60,6 +66,18 @@ export class ProjectResolver {
   // @UseGuards(JwtAuthGuard, AuthorGuard)
   remove(@Args('id') id: number) {
     return this.projectService.remove({ id });
+  }
+
+  @Mutation('archiveProject')
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  archive(@Args('id') id: number) {
+    return this.projectService.archive(id);
+  }
+
+  @Mutation('unarchiveProject')
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  unarchive(@Args('id') id: number) {
+    return this.projectService.unarchive(id);
   }
 
   // Fields

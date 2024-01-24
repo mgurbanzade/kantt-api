@@ -6,6 +6,7 @@ type Area {
   subareas: [Area]
   parentId: Int
   parent: Area
+  isArchived: Boolean
 }
 
 input CreateAreaInput {
@@ -26,10 +27,13 @@ input AreaWhereInput {
 type Query {
   getAllAreas(where: AreaWhereInput): [Area]!
   getArea(uuid: String!): Area
+  getArchivedAreas: [Area]!
 }
 
 type Mutation {
   createArea(createAreaInput: CreateAreaInput!): Area!
   updateArea(id: Int!, updateAreaInput: UpdateAreaInput!): Area!
   removeArea(id: Int!): Area
+  archiveArea(id: Int!): Area
+  unarchiveArea(id: Int!): Area
 }

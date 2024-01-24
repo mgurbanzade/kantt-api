@@ -18,7 +18,18 @@ export class AreaService {
 
   findAll(where: Prisma.AreaWhereInput): Promise<Area[]> {
     return this.prisma.area.findMany({
-      where,
+      where: {
+        isArchived: false,
+        ...where,
+      },
+    });
+  }
+
+  findArchived(): Promise<Area[]> {
+    return this.prisma.area.findMany({
+      where: {
+        isArchived: true,
+      },
     });
   }
 
@@ -38,6 +49,24 @@ export class AreaService {
   remove(where: Prisma.AreaWhereUniqueInput): Promise<Area> {
     return this.prisma.area.delete({
       where,
+    });
+  }
+
+  archive(id: number): Promise<Area> {
+    return this.prisma.area.update({
+      where: { id },
+      data: {
+        isArchived: true,
+      },
+    });
+  }
+
+  unarchive(id: number): Promise<Area> {
+    return this.prisma.area.update({
+      where: { id },
+      data: {
+        isArchived: false,
+      },
     });
   }
 

@@ -39,6 +39,7 @@ type Query {
   getAllProjects(where: ProjectWhereInput): [Project]!
   getProject(uuid: String!): Project
   getProjectWhere(where: ProjectWhereInput): Project
+  getArchivedProjects: [Project]!
 }
 
 type Mutation {
@@ -53,4 +54,6 @@ type Mutation {
     areaIds: [Int]
   ): Project!
   removeProject(id: Int!): Project
+  archiveProject(id: Int!): Project
+  unarchiveProject(id: Int!): Project
 }

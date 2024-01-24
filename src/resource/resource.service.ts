@@ -60,7 +60,18 @@ export class ResourceService {
 
   findAll(where: Prisma.ResourceWhereInput): Promise<Resource[]> {
     return this.prisma.resource.findMany({
-      where,
+      where: {
+        ...where,
+        isArchived: false,
+      },
+    });
+  }
+
+  findArchived(): Promise<Resource[]> {
+    return this.prisma.resource.findMany({
+      where: {
+        isArchived: true,
+      },
     });
   }
 
@@ -73,6 +84,7 @@ export class ResourceService {
   getRootResource(): Promise<Resource> {
     const where: Prisma.ResourceWhereInput = {
       isRoot: true,
+      isArchived: false,
     };
 
     return this.prisma.resource.findFirst({
@@ -93,6 +105,24 @@ export class ResourceService {
     });
   }
 
+  archive(id: number): Promise<Resource> {
+    return this.prisma.resource.update({
+      where: { id },
+      data: {
+        isArchived: true,
+      },
+    });
+  }
+
+  unarchive(id: number): Promise<Resource> {
+    return this.prisma.resource.update({
+      where: { id },
+      data: {
+        isArchived: false,
+      },
+    });
+  }
+
   // Fields
   project(resourceId: number): Promise<Resource> {
     return this.prisma.resource
@@ -109,6 +139,10 @@ export class ResourceService {
   subResources(resourceId: number): Promise<Resource[]> {
     return this.prisma.resource
       .findUnique({ where: { id: resourceId } })
-      .subResources();
+      .subResources({
+        where: {
+          isArchived: false,
+        },
+      });
   }
 }

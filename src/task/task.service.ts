@@ -42,6 +42,14 @@ export class TaskService {
     });
   }
 
+  findArchived(): Promise<Task[]> {
+    return this.prisma.task.findMany({
+      where: {
+        isArchived: true,
+      },
+    });
+  }
+
   findOne(where: Prisma.TaskWhereUniqueInput): Promise<Task> {
     return this.prisma.task.findUnique({
       where,
@@ -61,5 +69,22 @@ export class TaskService {
     });
   }
 
+  archive(id: number): Promise<Task> {
+    return this.prisma.task.update({
+      where: { id },
+      data: {
+        isArchived: true,
+      },
+    });
+  }
+
+  unarchive(id: number): Promise<Task> {
+    return this.prisma.task.update({
+      where: { id },
+      data: {
+        isArchived: false,
+      },
+    });
+  }
   // Fields
 }

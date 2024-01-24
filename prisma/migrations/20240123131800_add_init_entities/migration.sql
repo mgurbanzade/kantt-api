@@ -37,6 +37,7 @@ CREATE TABLE "Area" (
     "uuid" TEXT NOT NULL,
     "title" VARCHAR(200) NOT NULL,
     "parentId" INTEGER,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
 
@@ -54,6 +55,7 @@ CREATE TABLE "Resource" (
     "isRoot" BOOLEAN NOT NULL DEFAULT false,
     "contentJSON" JSONB,
     "contentHTML" TEXT,
+    "isArchived" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
 

@@ -31,6 +31,12 @@ export class AreaResolver {
     return this.areaService.findAll(where);
   }
 
+  @Query('getArchivedAreas')
+  // @UseGuards(JwtAuthGuard)
+  findArchived() {
+    return this.areaService.findArchived();
+  }
+
   @Query('getArea')
   // @UseGuards(JwtAuthGuard)
   findOne(@Args('uuid') uuid: string) {
@@ -51,6 +57,18 @@ export class AreaResolver {
   // @UseGuards(JwtAuthGuard, AuthorGuard)
   remove(@Args('id') id: number) {
     return this.areaService.remove({ id });
+  }
+
+  @Mutation('archiveArea')
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  archive(@Args('id') id: number) {
+    return this.areaService.archive(id);
+  }
+
+  @Mutation('unarchiveArea')
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  unarchive(@Args('id') id: number) {
+    return this.areaService.unarchive(id);
   }
 
   // Fields

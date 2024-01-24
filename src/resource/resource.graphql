@@ -14,6 +14,7 @@ type Resource {
   parentId: Int
   parent: Resource
   isRoot: Boolean
+  isArchived: Boolean
 }
 
 input CreateResourceInput {
@@ -46,6 +47,7 @@ input ResourceWhereInput {
 type Query {
   getAllResources(where: ResourceWhereInput!): [Resource]!
   getResource(where: ResourceWhereInput!): Resource
+  getArchivedResources: [Resource]!
 }
 
 type Mutation {
@@ -55,4 +57,6 @@ type Mutation {
   ): Resource!
   updateResource(id: Int!, updateResourceInput: UpdateResourceInput!): Resource!
   removeResource(id: Int!): Resource
+  archiveResource(id: Int!): Resource
+  unarchiveResource(id: Int!): Resource
 }

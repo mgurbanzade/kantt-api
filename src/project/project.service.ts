@@ -57,6 +57,15 @@ export class ProjectService {
     });
   }
 
+  findArchived(): Promise<Project[]> {
+    return this.prisma.project.findMany({
+      where: {
+        isArchived: true,
+        parentId: null,
+      },
+    });
+  }
+
   findOne(where: Prisma.ProjectWhereUniqueInput): Promise<Project> {
     return this.prisma.project.findUnique({
       where,
@@ -84,6 +93,34 @@ export class ProjectService {
       where,
       include: {
         boards: true,
+      },
+    });
+  }
+
+  archive(id: number): Promise<Project> {
+    return this.prisma.project.update({
+      where: { id },
+      data: {
+        isArchived: true,
+        subprojects: {
+          updateMany: {
+            where: {
+              isArchived: false,
+            },
+            data: {
+              isArchived: true,
+            },
+          },
+        },
+      },
+    });
+  }
+
+  unarchive(id: number): Promise<Project> {
+    return this.prisma.project.update({
+      where: { id },
+      data: {
+        isArchived: false,
       },
     });
   }
@@ -118,6 +155,7 @@ export class ProjectService {
     return this.prisma.task.findMany({
       where: {
         projectId,
+        isArchived: false,
       },
       orderBy: {
         id: 'asc',

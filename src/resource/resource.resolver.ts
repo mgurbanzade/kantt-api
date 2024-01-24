@@ -41,6 +41,12 @@ export class ResourceResolver {
     return this.resourceService.findAll(where);
   }
 
+  @Query('getArchivedResources')
+  // @UseGuards(JwtAuthGuard)
+  findArchived() {
+    return this.resourceService.findArchived();
+  }
+
   @Query('getResource')
   // @UseGuards(JwtAuthGuard)
   findOne(@Args('where') where: ResourceWhereInput) {
@@ -69,6 +75,18 @@ export class ResourceResolver {
     return this.resourceService.remove({ id });
   }
 
+  @Mutation('archiveResource')
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  archive(@Args('id') id: number) {
+    return this.resourceService.archive(id);
+  }
+
+  @Mutation('unarchiveResource')
+  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  unarchive(@Args('id') id: number) {
+    return this.resourceService.unarchive(id);
+  }
+
   // Fields
   @ResolveField(() => Resource)
   project(@Parent() resource) {
@@ -77,7 +95,7 @@ export class ResourceResolver {
 
   @ResolveField(() => Task)
   task(@Parent() task) {
-    return this.resourceService.project(task.id);
+    return this.resourceService.task(task.id);
   }
 
   @ResolveField(() => [Resource])
