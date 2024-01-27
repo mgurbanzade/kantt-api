@@ -12,6 +12,7 @@ export class AreaService {
       data: {
         ...data,
         uuid: uuidv4(),
+        emoji: '🎁',
       },
     });
   }
@@ -21,6 +22,9 @@ export class AreaService {
       where: {
         isArchived: false,
         ...where,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
   }

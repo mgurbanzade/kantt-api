@@ -22,6 +22,7 @@ export class ProjectService {
       data: {
         ...data,
         uuid: uuidv4(),
+        emoji: '👋',
         parent: {
           ...dynamicParent,
         },
@@ -53,7 +54,10 @@ export class ProjectService {
 
   findAll(where: Prisma.ProjectWhereInput): Promise<Project[]> {
     return this.prisma.project.findMany({
-      where,
+      where: {
+        ...where,
+        isArchived: false,
+      },
     });
   }
 
@@ -61,7 +65,6 @@ export class ProjectService {
     return this.prisma.project.findMany({
       where: {
         isArchived: true,
-        parentId: null,
       },
     });
   }
@@ -77,13 +80,14 @@ export class ProjectService {
     data: Prisma.ProjectUpdateInput,
     areaIds: number[],
   ): Promise<Project> {
+    const dynamicAreas = areaIds
+      ? { areas: { set: areaIds.map((id) => ({ id })) } }
+      : {};
     return this.prisma.project.update({
       where: { id },
       data: {
         ...data,
-        areas: {
-          set: areaIds.map((id) => ({ id })),
-        },
+        ...dynamicAreas,
       },
     });
   }

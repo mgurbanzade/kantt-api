@@ -11,6 +11,7 @@ type Project {
   tasks: [Task]
   subprojects: [Project]
   parentId: Int
+  emoji: String
 }
 
 input CreateProjectInput {
@@ -24,6 +25,7 @@ input UpdateProjectInput {
   description: String
   progress: Int
   isArchived: Boolean
+  emoji: String
 }
 
 input ProjectWhereInput {

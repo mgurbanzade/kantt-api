@@ -42,6 +42,7 @@ export class ResourceService {
     return this.prisma.resource.create({
       data: {
         uuid: uuidv4(),
+        emoji: '👋',
         ...createResourceInput,
         ...dynamicParent,
         ...dynamicProject,

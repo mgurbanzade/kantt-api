@@ -45,6 +45,7 @@ export class GoalQueryService {
       const project = await this.projectService.create(
         {
           uuid: uuidv4(),
+          emoji: '👋',
           title: projectTitle,
           description: projectTitle,
           isArchived: false,

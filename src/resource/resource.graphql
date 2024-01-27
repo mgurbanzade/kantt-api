@@ -15,6 +15,7 @@ type Resource {
   parent: Resource
   isRoot: Boolean
   isArchived: Boolean
+  emoji: String
 }
 
 input CreateResourceInput {
@@ -31,6 +32,7 @@ input ConnectResourceInput {
 
 input UpdateResourceInput {
   title: String
+  emoji: String
   contentJSON: Json
   contentHTML: String
 }

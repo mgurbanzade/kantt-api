@@ -15,6 +15,7 @@ export class CreateAreaInput {
 
 export class UpdateAreaInput {
     title?: Nullable<string>;
+    emoji?: Nullable<string>;
 }
 
 export class AreaWhereInput {
@@ -84,6 +85,7 @@ export class UpdateProjectInput {
     description?: Nullable<string>;
     progress?: Nullable<number>;
     isArchived?: Nullable<boolean>;
+    emoji?: Nullable<string>;
 }
 
 export class ProjectWhereInput {
@@ -109,6 +111,7 @@ export class ConnectResourceInput {
 
 export class UpdateResourceInput {
     title?: Nullable<string>;
+    emoji?: Nullable<string>;
     contentJSON?: Nullable<Json>;
     contentHTML?: Nullable<string>;
 }
@@ -178,6 +181,7 @@ export class Area {
     parentId?: Nullable<number>;
     parent?: Nullable<Area>;
     isArchived?: Nullable<boolean>;
+    emoji?: Nullable<string>;
 }
 
 export abstract class IQuery {
@@ -372,6 +376,7 @@ export class Project {
     tasks?: Nullable<Nullable<Task>[]>;
     subprojects?: Nullable<Nullable<Project>[]>;
     parentId?: Nullable<number>;
+    emoji?: Nullable<string>;
 }
 
 export class Resource {
@@ -389,6 +394,7 @@ export class Resource {
     parent?: Nullable<Resource>;
     isRoot?: Nullable<boolean>;
     isArchived?: Nullable<boolean>;
+    emoji?: Nullable<string>;
 }
 
 export class Task {
