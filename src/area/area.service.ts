@@ -7,10 +7,15 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class AreaService {
   constructor(private prisma: PrismaService) {}
-  create(data: Prisma.AreaCreateInput): Promise<Area> {
+  create(data: Prisma.AreaCreateInput, authorId: number): Promise<Area> {
     return this.prisma.area.create({
       data: {
         ...data,
+        author: {
+          connect: {
+            id: authorId,
+          },
+        },
         uuid: uuidv4(),
         emoji: '🎁',
       },
@@ -43,9 +48,9 @@ export class AreaService {
     });
   }
 
-  update(id: number, data: Prisma.AreaUpdateInput): Promise<Area> {
+  update(uuid: string, data: Prisma.AreaUpdateInput): Promise<Area> {
     return this.prisma.area.update({
-      where: { id },
+      where: { uuid },
       data,
     });
   }
@@ -56,18 +61,18 @@ export class AreaService {
     });
   }
 
-  archive(id: number): Promise<Area> {
+  archive(uuid: string): Promise<Area> {
     return this.prisma.area.update({
-      where: { id },
+      where: { uuid },
       data: {
         isArchived: true,
       },
     });
   }
 
-  unarchive(id: number): Promise<Area> {
+  unarchive(uuid: string): Promise<Area> {
     return this.prisma.area.update({
-      where: { id },
+      where: { uuid },
       data: {
         isArchived: false,
       },

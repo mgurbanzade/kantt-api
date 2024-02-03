@@ -17,21 +17,25 @@ import {
 } from '@src/types/graphql';
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 import { CreateResourceInput } from '@src/types/graphql';
+import { CurrentUser } from '@src/user/user.decorator';
 
 @Resolver('Resource')
 export class ResourceResolver {
   constructor(private readonly resourceService: ResourceService) {}
 
   @Mutation('createResource')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   create(
     @Args('createResourceInput')
     createResourceInput: CreateResourceInput,
     @Args('connectResourceInput') connectResourceInput: ConnectResourceInput,
+    @CurrentUser() user: { userId: number },
   ) {
+    console.log('user', user);
     return this.resourceService.create(
       createResourceInput,
       connectResourceInput,
+      user.userId,
     );
   }
 
@@ -62,29 +66,29 @@ export class ResourceResolver {
   @Mutation('updateResource')
   // @UseGuards(JwtAuthGuard)
   update(
-    @Args('id') id: number,
+    @Args('uuid') uuid: string,
     @Args('updateResourceInput')
     updateResourceInput: Prisma.ResourceUpdateInput,
   ) {
-    return this.resourceService.update(id, updateResourceInput);
+    return this.resourceService.update(uuid, updateResourceInput);
   }
 
   @Mutation('removeResource')
   // @UseGuards(JwtAuthGuard)
-  remove(@Args('id') id: number) {
-    return this.resourceService.remove({ id });
+  remove(@Args('uuid') uuid: string) {
+    return this.resourceService.remove({ uuid });
   }
 
   @Mutation('archiveResource')
   // @UseGuards(JwtAuthGuard, AuthorGuard)
-  archive(@Args('id') id: number) {
-    return this.resourceService.archive(id);
+  archive(@Args('uuid') uuid: string) {
+    return this.resourceService.archive(uuid);
   }
 
   @Mutation('unarchiveResource')
   // @UseGuards(JwtAuthGuard, AuthorGuard)
-  unarchive(@Args('id') id: number) {
-    return this.resourceService.unarchive(id);
+  unarchive(@Args('uuid') uuid: string) {
+    return this.resourceService.unarchive(uuid);
   }
 
   // Fields

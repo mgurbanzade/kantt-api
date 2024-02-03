@@ -10,7 +10,7 @@ export class TaskResolver {
   constructor(private readonly taskService: TaskService) {}
 
   @Mutation('createTask')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   create(
     @Args('createTaskInput')
     createTaskInput: CreateTaskInput,
@@ -39,29 +39,29 @@ export class TaskResolver {
   @Mutation('updateTask')
   // @UseGuards(JwtAuthGuard)
   update(
-    @Args('id') id: number,
+    @Args('uuid') uuid: string,
     @Args('updateTaskInput')
     updateTaskInput: Prisma.TaskUpdateInput,
   ) {
-    return this.taskService.update(id, updateTaskInput);
+    return this.taskService.update(uuid, updateTaskInput);
   }
 
   @Mutation('removeTask')
   // @UseGuards(JwtAuthGuard)
-  remove(@Args('id') id: number) {
-    return this.taskService.remove({ id });
+  remove(@Args('uuid') uuid: string) {
+    return this.taskService.remove({ uuid });
   }
 
   @Mutation('archiveTask')
   // @UseGuards(JwtAuthGuard, AuthorGuard)
-  archive(@Args('id') id: number) {
-    return this.taskService.archive(id);
+  archive(@Args('uuid') uuid: string) {
+    return this.taskService.archive(uuid);
   }
 
   @Mutation('unarchiveTask')
   // @UseGuards(JwtAuthGuard, AuthorGuard)
-  unarchive(@Args('id') id: number) {
-    return this.taskService.unarchive(id);
+  unarchive(@Args('uuid') uuid: string) {
+    return this.taskService.unarchive(uuid);
   }
 
   // Fields

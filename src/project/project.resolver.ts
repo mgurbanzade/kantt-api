@@ -6,78 +6,91 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-// import { UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Prisma, Project } from '@prisma/client';
 import { Area, Board, User, Task } from '@src/types/graphql';
 import { ProjectService } from './project.service';
-// import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
-// import { AuthorGuard } from './guards/author.guard';
+import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
+import { ProjectAuthorGuard } from './guards/project-author.guard';
+import { CurrentUser } from '@src/user/user.decorator';
 
 @Resolver('Project')
 export class ProjectResolver {
   constructor(private readonly projectService: ProjectService) {}
 
   @Mutation('createProject')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   create(
+    @CurrentUser() user: { userId: number },
     @Args('createProjectInput') createProjectInput: Prisma.ProjectCreateInput,
     @Args('areaIds') areaIds: number[],
     @Args('parentId') parentId?: number,
   ) {
-    return this.projectService.create(createProjectInput, areaIds, parentId);
+    return this.projectService.create({
+      data: createProjectInput,
+      authorId: user.userId,
+      areaIds,
+      parentId,
+    });
   }
 
   @Query('getAllProjects')
-  // @UseGuards(JwtAuthGuard)
-  findAll(@Args('where') where: Prisma.ProjectWhereInput) {
-    return this.projectService.findAll(where);
+  @UseGuards(JwtAuthGuard)
+  findAll(
+    @Args('where') where: Prisma.ProjectWhereInput,
+    @CurrentUser() user: { userId: number },
+  ) {
+    return this.projectService.findAll(where, user.userId);
   }
 
   @Query('getArchivedProjects')
-  // @UseGuards(JwtAuthGuard)
-  findArchived() {
-    return this.projectService.findArchived();
+  @UseGuards(JwtAuthGuard)
+  findArchived(@CurrentUser() user: { userId: number }) {
+    return this.projectService.findArchived({ authorId: user.userId });
   }
 
   @Query('getProject')
-  // @UseGuards(JwtAuthGuard)
-  findOne(@Args('uuid') uuid: string) {
-    return this.projectService.findOne({ uuid });
+  @UseGuards(JwtAuthGuard, ProjectAuthorGuard)
+  findOne(@Args('uuid') uuid: string, @CurrentUser() user: { userId: number }) {
+    return this.projectService.findOne({ uuid, authorId: user.userId });
   }
 
   @Query('getProjectWhere')
-  // @UseGuards(JwtAuthGuard)
-  findOneWhere(@Args('where') where: Prisma.ProjectWhereUniqueInput) {
-    return this.projectService.findOne(where);
+  @UseGuards(JwtAuthGuard)
+  findOneWhere(
+    @Args('where') where: Prisma.ProjectWhereUniqueInput,
+    @CurrentUser() user: { userId: number },
+  ) {
+    return this.projectService.findOne({ ...where, authorId: user.userId });
   }
 
   @Mutation('updateProject')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  @UseGuards(JwtAuthGuard, ProjectAuthorGuard)
   update(
-    @Args('id') id: number,
+    @Args('uuid') uuid: string,
     @Args('updateProjectInput')
     updateProjectInput: Prisma.ProjectUpdateInput,
     @Args('areaIds') areaIds: number[],
   ) {
-    return this.projectService.update(id, updateProjectInput, areaIds);
+    return this.projectService.update(uuid, updateProjectInput, areaIds);
   }
 
   @Mutation('removeProject')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
-  remove(@Args('id') id: number) {
-    return this.projectService.remove({ id });
+  @UseGuards(JwtAuthGuard, ProjectAuthorGuard)
+  remove(@Args('uuid') uuid: string) {
+    return this.projectService.remove({ uuid });
   }
 
   @Mutation('archiveProject')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
-  archive(@Args('id') id: number) {
-    return this.projectService.archive(id);
+  @UseGuards(JwtAuthGuard, ProjectAuthorGuard)
+  archive(@Args('uuid') uuid: string) {
+    return this.projectService.archive(uuid);
   }
 
   @Mutation('unarchiveProject')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
-  unarchive(@Args('id') id: number) {
-    return this.projectService.unarchive(id);
+  @UseGuards(JwtAuthGuard, ProjectAuthorGuard)
+  unarchive(@Args('uuid') uuid: string) {
+    return this.projectService.unarchive(uuid);
   }
 
   // Fields

@@ -56,9 +56,9 @@ export class TaskService {
     });
   }
 
-  update(id: number, data: Prisma.TaskUpdateInput): Promise<Task> {
+  update(uuid: string, data: Prisma.TaskUpdateInput): Promise<Task> {
     return this.prisma.task.update({
-      where: { id },
+      where: { uuid },
       data,
     });
   }
@@ -69,18 +69,18 @@ export class TaskService {
     });
   }
 
-  archive(id: number): Promise<Task> {
+  archive(uuid: string): Promise<Task> {
     return this.prisma.task.update({
-      where: { id },
+      where: { uuid },
       data: {
         isArchived: true,
       },
     });
   }
 
-  unarchive(id: number): Promise<Task> {
+  unarchive(uuid: string): Promise<Task> {
     return this.prisma.task.update({
-      where: { id },
+      where: { uuid },
       data: {
         isArchived: false,
       },

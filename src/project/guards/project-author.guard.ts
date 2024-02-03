@@ -3,7 +3,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { ProjectService } from '../project.service';
 
 @Injectable()
-export class AuthorGuard implements CanActivate {
+export class ProjectAuthorGuard implements CanActivate {
   constructor(private projectService: ProjectService) {}
 
   async canActivate(context: ExecutionContext) {
@@ -12,14 +12,14 @@ export class AuthorGuard implements CanActivate {
     const requestedUser = request.user;
     const queryVariables = request.body.variables;
 
-    if (!requestedUser || !queryVariables.id) {
+    if (!requestedUser || !queryVariables.uuid) {
       return false;
     }
 
     const project = await this.projectService.findOne({
-      id: Number(queryVariables.id),
+      uuid: queryVariables.uuid,
     });
 
-    return project.author.id == requestedUser.id;
+    return project.authorId == requestedUser.userId;
   }
 }

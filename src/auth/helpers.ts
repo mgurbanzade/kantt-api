@@ -4,7 +4,7 @@ export const generateCookie = (
   expSec: string,
 ) => {
   const domain =
-    process.env.NODE_ENV === 'development' ? 'localhost' : 'wdyw.io';
+    process.env.NODE_ENV === 'development' ? 'localhost' : 'kantt.io';
 
-  return `${name}=${token}; Domain=${domain}; HttpOnly; Path=/; SameSite=None; Secure; Max-Age=${expSec}`;
+  return `${name}=${token}; Domain=${domain}; HttpOnly; Path=/; SameSite=Strict; Secure; Max-Age=${expSec}`;
 };

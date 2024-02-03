@@ -12,8 +12,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:4321',
       'https://studio.apollographql.com',
-      'https://wdyw.net',
-      'https://wdyw.io',
+      'https://kantt.io',
     ], // fix me
     credentials: true,
   });

@@ -24,7 +24,7 @@ CREATE TABLE "Project" (
     "progress" INTEGER NOT NULL DEFAULT 0,
     "emoji" TEXT NOT NULL,
     "isArchived" BOOLEAN NOT NULL DEFAULT false,
-    "authorId" INTEGER,
+    "authorId" INTEGER NOT NULL,
     "parentId" INTEGER,
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
@@ -38,6 +38,7 @@ CREATE TABLE "Area" (
     "uuid" TEXT NOT NULL,
     "title" VARCHAR(200) NOT NULL,
     "emoji" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
     "parentId" INTEGER,
     "isArchived" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -53,6 +54,7 @@ CREATE TABLE "Resource" (
     "title" VARCHAR(200),
     "projectId" INTEGER,
     "emoji" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
     "taskId" INTEGER,
     "parentId" INTEGER,
     "isRoot" BOOLEAN NOT NULL DEFAULT false,
@@ -149,13 +151,19 @@ CREATE UNIQUE INDEX "_Projects_AB_unique" ON "_Projects"("A", "B");
 CREATE INDEX "_Projects_B_index" ON "_Projects"("B");
 
 -- AddForeignKey
-ALTER TABLE "Project" ADD CONSTRAINT "Project_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Project" ADD CONSTRAINT "Project_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Project" ADD CONSTRAINT "Project_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Area" ADD CONSTRAINT "Area_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Area" ADD CONSTRAINT "Area_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Area"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Resource" ADD CONSTRAINT "Resource_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Resource" ADD CONSTRAINT "Resource_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;

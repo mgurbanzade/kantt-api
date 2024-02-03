@@ -4,14 +4,22 @@ import { Project } from '@src/types/graphql';
 import { PrismaService } from '@src/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 
+type CreateProjectParams = {
+  data: Prisma.ProjectCreateInput;
+  areaIds: number[];
+  authorId: number;
+  parentId?: number;
+};
+
 @Injectable()
 export class ProjectService {
   constructor(private prisma: PrismaService) {}
-  create(
-    data: Prisma.ProjectCreateInput,
-    areaIds: number[],
-    parentId?: number,
-  ): Promise<Project> {
+  create({
+    data,
+    areaIds,
+    authorId,
+    parentId,
+  }: CreateProjectParams): Promise<Project> {
     const dynamicAreas = areaIds
       ? { connect: areaIds.map((id) => ({ id })) }
       : {};
@@ -23,6 +31,11 @@ export class ProjectService {
         ...data,
         uuid: uuidv4(),
         emoji: '👋',
+        author: {
+          connect: {
+            id: authorId,
+          },
+        },
         parent: {
           ...dynamicParent,
         },
@@ -52,19 +65,24 @@ export class ProjectService {
     });
   }
 
-  findAll(where: Prisma.ProjectWhereInput): Promise<Project[]> {
+  findAll(
+    where: Prisma.ProjectWhereInput,
+    authorId: number,
+  ): Promise<Project[]> {
     return this.prisma.project.findMany({
       where: {
         ...where,
         isArchived: false,
+        authorId,
       },
     });
   }
 
-  findArchived(): Promise<Project[]> {
+  findArchived({ authorId }: { authorId: number }): Promise<Project[]> {
     return this.prisma.project.findMany({
       where: {
         isArchived: true,
+        authorId,
       },
     });
   }
@@ -76,7 +94,7 @@ export class ProjectService {
   }
 
   update(
-    id: number,
+    uuid: string,
     data: Prisma.ProjectUpdateInput,
     areaIds: number[],
   ): Promise<Project> {
@@ -84,7 +102,7 @@ export class ProjectService {
       ? { areas: { set: areaIds.map((id) => ({ id })) } }
       : {};
     return this.prisma.project.update({
-      where: { id },
+      where: { uuid },
       data: {
         ...data,
         ...dynamicAreas,
@@ -101,9 +119,9 @@ export class ProjectService {
     });
   }
 
-  archive(id: number): Promise<Project> {
+  archive(uuid: string): Promise<Project> {
     return this.prisma.project.update({
-      where: { id },
+      where: { uuid },
       data: {
         isArchived: true,
         subprojects: {
@@ -120,9 +138,9 @@ export class ProjectService {
     });
   }
 
-  unarchive(id: number): Promise<Project> {
+  unarchive(uuid: string): Promise<Project> {
     return this.prisma.project.update({
-      where: { id },
+      where: { uuid },
       data: {
         isArchived: false,
       },

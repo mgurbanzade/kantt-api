@@ -15,7 +15,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailModule } from './email/email.module';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { GoalQueryModule } from './goal-query/goal-query.module';
+// import { GoalQueryModule } from './goal-query/goal-query.module';
 import * as Joi from 'joi';
 import { OpenAIModule } from './openai/openai.module';
 import { BoardModule } from './board/board.module';
@@ -66,7 +66,7 @@ import { ResourceModule } from './resource/resource.module';
     ResourceModule,
     AreaModule,
     AuthModule,
-    GoalQueryModule,
+    // GoalQueryModule,
     OpenAIModule,
   ],
   controllers: [AppController],

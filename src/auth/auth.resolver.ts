@@ -2,10 +2,8 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { AuthService } from '@src/auth/auth.service';
 import {
-  LoginResponse,
   LoginUserInput,
   SignupUserInput,
-  SignupResponse,
   LogoutResponse,
   User,
 } from '@src/types/graphql';
@@ -17,7 +15,7 @@ import JwtRefreshTokenGuard from './jwt-rt.guard';
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
-  @Mutation(() => LoginResponse)
+  @Mutation('login')
   @UseGuards(GqlAuthGuard)
   login(
     @Args('loginUserInput') loginUserInput: LoginUserInput,
@@ -26,7 +24,7 @@ export class AuthResolver {
     return this.authService.login(ctx);
   }
 
-  @Mutation(() => SignupResponse)
+  @Mutation('signup')
   signup(@Args('signupUserInput') signupUserInput: SignupUserInput) {
     return this.authService.signup(signupUserInput);
   }

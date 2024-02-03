@@ -14,6 +14,7 @@ export class ResourceService {
   create(
     createResourceInput: CreateResourceInput,
     connectResourceInput: ConnectResourceInput,
+    authorId: number,
   ): Promise<Resource> {
     const { projectId, taskId, parentId } = connectResourceInput;
     const dynamicParent = parentId
@@ -43,6 +44,11 @@ export class ResourceService {
       data: {
         uuid: uuidv4(),
         emoji: '👋',
+        author: {
+          connect: {
+            id: authorId,
+          },
+        },
         ...createResourceInput,
         ...dynamicParent,
         ...dynamicProject,
@@ -93,9 +99,9 @@ export class ResourceService {
     });
   }
 
-  update(id: number, data: Prisma.ResourceUpdateInput): Promise<Resource> {
+  update(uuid: string, data: Prisma.ResourceUpdateInput): Promise<Resource> {
     return this.prisma.resource.update({
-      where: { id },
+      where: { uuid },
       data,
     });
   }
@@ -106,18 +112,18 @@ export class ResourceService {
     });
   }
 
-  archive(id: number): Promise<Resource> {
+  archive(uuid: string): Promise<Resource> {
     return this.prisma.resource.update({
-      where: { id },
+      where: { uuid },
       data: {
         isArchived: true,
       },
     });
   }
 
-  unarchive(id: number): Promise<Resource> {
+  unarchive(uuid: string): Promise<Resource> {
     return this.prisma.resource.update({
-      where: { id },
+      where: { uuid },
       data: {
         isArchived: false,
       },

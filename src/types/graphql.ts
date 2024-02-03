@@ -182,6 +182,8 @@ export class Area {
     parent?: Nullable<Area>;
     isArchived?: Nullable<boolean>;
     emoji?: Nullable<string>;
+    author?: Nullable<User>;
+    authorId?: Nullable<number>;
 }
 
 export abstract class IQuery {
@@ -233,17 +235,17 @@ export abstract class IQuery {
 export abstract class IMutation {
     abstract createArea(createAreaInput: CreateAreaInput): Area | Promise<Area>;
 
-    abstract updateArea(id: number, updateAreaInput: UpdateAreaInput): Area | Promise<Area>;
+    abstract updateArea(uuid: string, updateAreaInput: UpdateAreaInput): Area | Promise<Area>;
 
-    abstract removeArea(id: number): Nullable<Area> | Promise<Nullable<Area>>;
+    abstract removeArea(uuid: string): Nullable<Area> | Promise<Nullable<Area>>;
 
-    abstract archiveArea(id: number): Nullable<Area> | Promise<Nullable<Area>>;
+    abstract archiveArea(uuid: string): Nullable<Area> | Promise<Nullable<Area>>;
 
-    abstract unarchiveArea(id: number): Nullable<Area> | Promise<Nullable<Area>>;
+    abstract unarchiveArea(uuid: string): Nullable<Area> | Promise<Nullable<Area>>;
 
     abstract login(loginUserInput: LoginUserInput): LoginResponse | Promise<LoginResponse>;
 
-    abstract signup(signupUserInput: SignupUserInput): LoginResponse | Promise<LoginResponse>;
+    abstract signup(signupUserInput: SignupUserInput): SignupResponse | Promise<SignupResponse>;
 
     abstract logout(): LogoutResponse | Promise<LogoutResponse>;
 
@@ -269,33 +271,33 @@ export abstract class IMutation {
 
     abstract createProject(createProjectInput: CreateProjectInput, areaIds?: Nullable<Nullable<number>[]>, parentId?: Nullable<number>): Project | Promise<Project>;
 
-    abstract updateProject(id: number, updateProjectInput: UpdateProjectInput, areaIds?: Nullable<Nullable<number>[]>): Project | Promise<Project>;
+    abstract updateProject(uuid: string, updateProjectInput: UpdateProjectInput, areaIds?: Nullable<Nullable<number>[]>): Project | Promise<Project>;
 
-    abstract removeProject(id: number): Nullable<Project> | Promise<Nullable<Project>>;
+    abstract removeProject(uuid: string): Nullable<Project> | Promise<Nullable<Project>>;
 
-    abstract archiveProject(id: number): Nullable<Project> | Promise<Nullable<Project>>;
+    abstract archiveProject(uuid: string): Nullable<Project> | Promise<Nullable<Project>>;
 
-    abstract unarchiveProject(id: number): Nullable<Project> | Promise<Nullable<Project>>;
+    abstract unarchiveProject(uuid: string): Nullable<Project> | Promise<Nullable<Project>>;
 
     abstract createResource(createResourceInput: CreateResourceInput, connectResourceInput: ConnectResourceInput): Resource | Promise<Resource>;
 
-    abstract updateResource(id: number, updateResourceInput: UpdateResourceInput): Resource | Promise<Resource>;
+    abstract updateResource(uuid: string, updateResourceInput: UpdateResourceInput): Resource | Promise<Resource>;
 
-    abstract removeResource(id: number): Nullable<Resource> | Promise<Nullable<Resource>>;
+    abstract removeResource(uuid: string): Nullable<Resource> | Promise<Nullable<Resource>>;
 
-    abstract archiveResource(id: number): Nullable<Resource> | Promise<Nullable<Resource>>;
+    abstract archiveResource(uuid: string): Nullable<Resource> | Promise<Nullable<Resource>>;
 
-    abstract unarchiveResource(id: number): Nullable<Resource> | Promise<Nullable<Resource>>;
+    abstract unarchiveResource(uuid: string): Nullable<Resource> | Promise<Nullable<Resource>>;
 
     abstract createTask(createTaskInput: CreateTaskInput): Task | Promise<Task>;
 
-    abstract updateTask(id: number, updateTaskInput: UpdateTaskInput): Task | Promise<Task>;
+    abstract updateTask(uuid: string, updateTaskInput: UpdateTaskInput): Task | Promise<Task>;
 
-    abstract removeTask(id: number): Nullable<Task> | Promise<Nullable<Task>>;
+    abstract removeTask(uuid: string): Nullable<Task> | Promise<Nullable<Task>>;
 
-    abstract archiveTask(id: number): Nullable<Task> | Promise<Nullable<Task>>;
+    abstract archiveTask(uuid: string): Nullable<Task> | Promise<Nullable<Task>>;
 
-    abstract unarchiveTask(id: number): Nullable<Task> | Promise<Nullable<Task>>;
+    abstract unarchiveTask(uuid: string): Nullable<Task> | Promise<Nullable<Task>>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 
@@ -371,6 +373,7 @@ export class Project {
     progress?: Nullable<number>;
     isArchived?: Nullable<boolean>;
     author?: Nullable<User>;
+    authorId?: Nullable<number>;
     boards?: Nullable<Nullable<Board>[]>;
     areas?: Nullable<Nullable<Area>[]>;
     tasks?: Nullable<Nullable<Task>[]>;
@@ -395,6 +398,8 @@ export class Resource {
     isRoot?: Nullable<boolean>;
     isArchived?: Nullable<boolean>;
     emoji?: Nullable<string>;
+    author?: Nullable<User>;
+    authorId?: Nullable<number>;
 }
 
 export class Task {

@@ -42,8 +42,8 @@ export class GoalQueryService {
 
       console.log(responseTextArray);
 
-      const project = await this.projectService.create(
-        {
+      const project = await this.projectService.create({
+        data: {
           uuid: uuidv4(),
           emoji: '👋',
           title: projectTitle,
@@ -51,9 +51,10 @@ export class GoalQueryService {
           isArchived: false,
           progress: 0,
         },
-        [],
-        null,
-      );
+        areaIds: [],
+        parentId: null,
+        authorId: null,
+      });
 
       const board = await this.boardService.create(
         {

@@ -37,7 +37,7 @@ input SignupUserInput {
 
 type Mutation {
   login(loginUserInput: LoginUserInput!): LoginResponse!
-  signup(signupUserInput: SignupUserInput!): LoginResponse!
+  signup(signupUserInput: SignupUserInput!): SignupResponse!
   logout: LogoutResponse!
 }
 

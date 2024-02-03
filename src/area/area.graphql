@@ -8,6 +8,8 @@ type Area {
   parent: Area
   isArchived: Boolean
   emoji: String
+  author: User
+  authorId: Int
 }
 
 input CreateAreaInput {
@@ -34,8 +36,8 @@ type Query {
 
 type Mutation {
   createArea(createAreaInput: CreateAreaInput!): Area!
-  updateArea(id: Int!, updateAreaInput: UpdateAreaInput!): Area!
-  removeArea(id: Int!): Area
-  archiveArea(id: Int!): Area
-  unarchiveArea(id: Int!): Area
+  updateArea(uuid: String!, updateAreaInput: UpdateAreaInput!): Area!
+  removeArea(uuid: String!): Area
+  archiveArea(uuid: String!): Area
+  unarchiveArea(uuid: String!): Area
 }

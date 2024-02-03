@@ -136,7 +136,7 @@ export class AuthService {
   async logout(ctx): Promise<LogoutResponse> {
     if (!ctx?.req?.user.userId) throw new Error('User is not present');
     const domain =
-      process.env.NODE_ENV === 'development' ? 'localhost' : 'wdyw.io';
+      process.env.NODE_ENV === 'development' ? 'localhost' : 'kantt.io';
 
     const accessCookie = `Authentication=; Domain=${domain}; HttpOnly; Path=/; Max-Age=0`;
     const refreshCookie = `Refresh=; Domain=${domain}; HttpOnly; Path=/; Max-Age=0`;
@@ -167,10 +167,10 @@ export class AuthService {
       password: encPass,
     });
 
-    await this.emailConfirmationService.sendVerificationLink(
-      newUser.email,
-      newUser.firstname,
-    );
+    // await this.emailConfirmationService.sendVerificationLink(
+    //   newUser.email,
+    //   newUser.firstname,
+    // );
 
     return {
       user: newUser,

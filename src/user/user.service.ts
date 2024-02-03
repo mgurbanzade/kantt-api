@@ -3,6 +3,8 @@ import * as bcrypt from 'bcrypt';
 import { User, Prisma } from '@prisma/client';
 import { PrismaService } from '@src/prisma/prisma.service';
 import { ResetPasswordInput } from '@src/types/graphql';
+import { v4 as uuidv4 } from 'uuid';
+
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
@@ -10,6 +12,20 @@ export class UserService {
     const user = await this.prisma.user.create({
       data: {
         ...data,
+      },
+    });
+
+    await this.prisma.resource.create({
+      data: {
+        title: 'Root Resource',
+        emoji: '🌳',
+        uuid: uuidv4(),
+        isRoot: true,
+        author: {
+          connect: {
+            id: user.id,
+          },
+        },
       },
     });
 

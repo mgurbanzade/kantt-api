@@ -6,6 +6,7 @@ type Project {
   progress: Int
   isArchived: Boolean
   author: User
+  authorId: Int
   boards: [Board]
   areas: [Area]
   tasks: [Task]
@@ -51,11 +52,11 @@ type Mutation {
     parentId: Int
   ): Project!
   updateProject(
-    id: Int!
+    uuid: String!
     updateProjectInput: UpdateProjectInput!
     areaIds: [Int]
   ): Project!
-  removeProject(id: Int!): Project
-  archiveProject(id: Int!): Project
-  unarchiveProject(id: Int!): Project
+  removeProject(uuid: String!): Project
+  archiveProject(uuid: String!): Project
+  unarchiveProject(uuid: String!): Project
 }

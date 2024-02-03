@@ -30,7 +30,7 @@ export class EmailConfirmationService {
     return this.emailService.sendMail({
       to: email,
       from: this.configService.get('EMAIL'),
-      subject: 'Welcome to WDYW!',
+      subject: 'Welcome to Kantt!',
       template: 'account-verification',
       context: {
         name,

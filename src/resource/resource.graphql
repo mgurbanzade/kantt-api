@@ -16,6 +16,8 @@ type Resource {
   isRoot: Boolean
   isArchived: Boolean
   emoji: String
+  author: User
+  authorId: Int
 }
 
 input CreateResourceInput {
@@ -57,8 +59,11 @@ type Mutation {
     createResourceInput: CreateResourceInput!
     connectResourceInput: ConnectResourceInput!
   ): Resource!
-  updateResource(id: Int!, updateResourceInput: UpdateResourceInput!): Resource!
-  removeResource(id: Int!): Resource
-  archiveResource(id: Int!): Resource
-  unarchiveResource(id: Int!): Resource
+  updateResource(
+    uuid: String!
+    updateResourceInput: UpdateResourceInput!
+  ): Resource!
+  removeResource(uuid: String!): Resource
+  archiveResource(uuid: String!): Resource
+  unarchiveResource(uuid: String!): Resource
 }

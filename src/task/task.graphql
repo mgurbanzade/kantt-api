@@ -51,8 +51,8 @@ type Query {
 
 type Mutation {
   createTask(createTaskInput: CreateTaskInput!): Task!
-  updateTask(id: Int!, updateTaskInput: UpdateTaskInput!): Task!
-  removeTask(id: Int!): Task
-  archiveTask(id: Int!): Task
-  unarchiveTask(id: Int!): Task
+  updateTask(uuid: String!, updateTaskInput: UpdateTaskInput!): Task!
+  removeTask(uuid: String!): Task
+  archiveTask(uuid: String!): Task
+  unarchiveTask(uuid: String!): Task
 }

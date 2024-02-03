@@ -6,69 +6,72 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-// import { UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { AreaService } from './Area.service';
-// import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 import { Area, Project } from '@src/types/graphql';
+import { AreaAuthorGuard } from './guards/area-author.guard';
+import { AreaService } from './Area.service';
+import { CurrentUser } from '@src/user/user.decorator';
 
 @Resolver('Area')
 export class AreaResolver {
   constructor(private readonly areaService: AreaService) {}
 
   @Mutation('createArea')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   create(
     @Args('createAreaInput')
     createAreaInput: Prisma.AreaCreateInput,
+    @CurrentUser() user: { userId: number },
   ) {
-    return this.areaService.create(createAreaInput);
+    return this.areaService.create(createAreaInput, user.userId);
   }
 
   @Query('getAllAreas')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   findAll(@Args('where') where: Prisma.AreaWhereInput) {
     return this.areaService.findAll(where);
   }
 
   @Query('getArchivedAreas')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   findArchived() {
     return this.areaService.findArchived();
   }
 
   @Query('getArea')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   findOne(@Args('uuid') uuid: string) {
     return this.areaService.findOne({ uuid });
   }
 
   @Mutation('updateArea')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  @UseGuards(JwtAuthGuard, AreaAuthorGuard)
   update(
-    @Args('id') id: number,
+    @Args('uuid') uuid: string,
     @Args('updateAreaInput')
     updateAreaInput: Prisma.AreaUpdateInput,
   ) {
-    return this.areaService.update(id, updateAreaInput);
+    return this.areaService.update(uuid, updateAreaInput);
   }
 
   @Mutation('removeArea')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
-  remove(@Args('id') id: number) {
-    return this.areaService.remove({ id });
+  @UseGuards(JwtAuthGuard, AreaAuthorGuard)
+  remove(@Args('uuid') uuid: string) {
+    return this.areaService.remove({ uuid });
   }
 
   @Mutation('archiveArea')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
-  archive(@Args('id') id: number) {
-    return this.areaService.archive(id);
+  @UseGuards(JwtAuthGuard, AreaAuthorGuard)
+  archive(@Args('uuid') uuid: string) {
+    return this.areaService.archive(uuid);
   }
 
   @Mutation('unarchiveArea')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
-  unarchive(@Args('id') id: number) {
-    return this.areaService.unarchive(id);
+  @UseGuards(JwtAuthGuard, AreaAuthorGuard)
+  unarchive(@Args('uuid') uuid: string) {
+    return this.areaService.unarchive(uuid);
   }
 
   // Fields
