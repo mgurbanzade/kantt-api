@@ -19,7 +19,6 @@ jobs:
       - name: Install Dependencies and Build
         run: |
           pnpm install
-          pnpm db:generate
           pnpm run build
 
       - name: Archive Dist Folder
