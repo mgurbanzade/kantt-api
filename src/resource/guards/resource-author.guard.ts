@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { ResourceService } from '../Resource.service';
+import { ResourceService } from '../resource.service';
 
 @Injectable()
 export class ResourceAuthorGuard implements CanActivate {
