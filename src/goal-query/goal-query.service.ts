@@ -19,6 +19,7 @@ export class GoalQueryService {
 
   async handleGoalQuery(
     handleGoalQueryInput: HandleGoalQueryInput,
+    authorId: number,
   ): Promise<any> {
     const { body } = handleGoalQueryInput;
 
@@ -50,6 +51,11 @@ export class GoalQueryService {
           description: projectTitle,
           isArchived: false,
           progress: 0,
+          author: {
+            connect: {
+              id: authorId,
+            },
+          },
         },
         areaIds: [],
         parentId: null,

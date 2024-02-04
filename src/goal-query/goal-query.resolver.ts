@@ -12,6 +12,7 @@ import {
   HandleGoalQueryInput,
   HandleGoalQueryPayload,
 } from '@src/types/graphql';
+import { CurrentUser } from '@src/user/user.decorator';
 
 @Resolver()
 export class GoalQueryResolver {
@@ -23,8 +24,12 @@ export class GoalQueryResolver {
   @Mutation(() => HandleGoalQueryPayload)
   handleGoalQuery(
     @Args('handleGoalQueryInput') handleGoalQueryInput: HandleGoalQueryInput,
+    @CurrentUser() user: { userId: number },
   ) {
-    return this.goalQueryService.handleGoalQuery(handleGoalQueryInput);
+    return this.goalQueryService.handleGoalQuery(
+      handleGoalQueryInput,
+      user.userId,
+    );
   }
 
   // Fields

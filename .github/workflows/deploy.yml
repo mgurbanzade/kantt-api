@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: SSH key setup
         run: |
@@ -28,3 +28,6 @@ jobs:
           script: |
             cd /root/kantt-api
             git pull origin main
+            pnpm install
+            pnpm run build
+            pm2 start node ./dist/main.js --watch
