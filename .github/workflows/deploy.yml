@@ -16,7 +16,7 @@ jobs:
       - name: SSH key setup
         run: |
           mkdir -p ~/.ssh/
-          echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/.ssh/id_rsa
+          echo -e "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
       - name: Deploy to Digital Ocean
