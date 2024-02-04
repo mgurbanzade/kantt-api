@@ -11,7 +11,7 @@ import { Prisma } from '@prisma/client';
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 import { Area, Project } from '@src/types/graphql';
 import { AreaAuthorGuard } from './guards/area-author.guard';
-import { AreaService } from './Area.service';
+import { AreaService } from './area.service';
 import { CurrentUser } from '@src/user/user.decorator';
 
 @Resolver('Area')

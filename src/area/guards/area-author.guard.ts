@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { AreaService } from '../Area.service';
+import { AreaService } from '../area.service';
 
 @Injectable()
 export class AreaAuthorGuard implements CanActivate {
