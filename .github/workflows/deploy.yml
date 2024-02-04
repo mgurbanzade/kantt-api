@@ -26,5 +26,5 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /kantt-api
+            cd /root/kantt-api
             git pull origin main
