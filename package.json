@@ -63,7 +63,8 @@
     "prisma": "^5.9.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.5",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "ts-morph": "^20.0.0"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.418.0",
@@ -96,7 +97,6 @@
     "supertest": "^6.3.3",
     "ts-jest": "29.1.1",
     "ts-loader": "^9.4.4",
-    "ts-morph": "^20.0.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.2.2"
