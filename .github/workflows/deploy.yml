@@ -35,21 +35,6 @@ jobs:
           target: '/root/kantt-api'
 
       - name: Deploy on Server
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          EMAIL: ${{ secrets.EMAIL }}
-          EMAIL_CONFIRMATION_URL: ${{ secrets.EMAIL_CONFIRMATION_URL }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          JWT_EXPIRATION_TIME_SEC: ${{ secrets.JWT_EXPIRATION_TIME_SEC }}
-          JWT_RT_EXPIRATION_TIME_SEC: ${{ secrets.JWT_RT_EXPIRATION_TIME_SEC }}
-          JWT_RT_SECRET: ${{ secrets.JWT_RT_SECRET }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: ${{ secrets.JWT_VERIFICATION_TOKEN_EXPIRATION_TIME }}
-          JWT_VERIFICATION_TOKEN_SECRET: ${{ secrets.JWT_VERIFICATION_TOKEN_SECRET }}
-          PASSWORD_RESET_URL: ${{ secrets.PASSWORD_RESET_URL }}
-          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
-
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DO_HOST }}
@@ -62,5 +47,4 @@ jobs:
             cd /root/kantt-api
             pnpm install --prod
             pnpm db:generate
-            pm2 kill
-            pm2 start pnpm --name "kantt-api" -- run start:prod
+            pm2 start /root/kantt-api/dist/main.js -f
