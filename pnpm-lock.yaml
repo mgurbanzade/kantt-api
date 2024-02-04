@@ -98,6 +98,9 @@ dependencies:
   pg:
     specifier: ^8.11.3
     version: 8.11.3
+  prisma:
+    specifier: ^5.9.0
+    version: 5.9.0
   reflect-metadata:
     specifier: ^0.1.13
     version: 0.1.13
@@ -187,9 +190,6 @@ devDependencies:
   prettier:
     specifier: ^3.0.3
     version: 3.0.3
-  prisma:
-    specifier: ^5.9.0
-    version: 5.9.0
   source-map-support:
     specifier: ^0.5.21
     version: 0.5.21
@@ -1686,11 +1686,9 @@ packages:
 
   /@prisma/debug@5.9.0:
     resolution: {integrity: sha512-3Uhj5YSPqaIfzJQ6JQzCNBXeBTy0x803fGIoo2tvP/KIEd+o4o49JxCQtKtP8aeef5iNh5Nn9Z25wDrdLjS80A==}
-    dev: true
 
   /@prisma/engines-version@5.9.0-32.23fdc5965b1e05fc54e5f26ed3de66776b93de64:
     resolution: {integrity: sha512-HFl7275yF0FWbdcNvcSRbbu9JCBSLMcurYwvWc8WGDnpu7APxQo2ONtZrUggU3WxLxUJ2uBX+0GOFIcJeVeOOQ==}
-    dev: true
 
   /@prisma/engines@5.9.0:
     resolution: {integrity: sha512-BH1fpXbMH09TwfZH5FVMJwRp6afEhKzqwebbCLdaEkJDuhxA//iwbILLqGFtGTgZbdBNUOThIK+UC3++5kWMTg==}
@@ -1700,7 +1698,6 @@ packages:
       '@prisma/engines-version': 5.9.0-32.23fdc5965b1e05fc54e5f26ed3de66776b93de64
       '@prisma/fetch-engine': 5.9.0
       '@prisma/get-platform': 5.9.0
-    dev: true
 
   /@prisma/fetch-engine@5.9.0:
     resolution: {integrity: sha512-NL8Vm8Vl2d6NOSkkPGN5TTTz4s6cyCleXOzqtOFWzfKFJ4wtN2Shu7llOT+ykf6nDzh1lCN2JHUt1S6FGFZGig==}
@@ -1708,13 +1705,11 @@ packages:
       '@prisma/debug': 5.9.0
       '@prisma/engines-version': 5.9.0-32.23fdc5965b1e05fc54e5f26ed3de66776b93de64
       '@prisma/get-platform': 5.9.0
-    dev: true
 
   /@prisma/get-platform@5.9.0:
     resolution: {integrity: sha512-8CatX+E6eZxcOjJZe5hF8EXxdb5GsQTA/u7pdmUJSxGLacW9K3r5vDdgV8s22PubObQQ6979/rkCMItbCrG4Yg==}
     dependencies:
       '@prisma/debug': 5.9.0
-    dev: true
 
   /@protobufjs/aspromise@1.1.2:
     resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
@@ -7124,7 +7119,6 @@ packages:
     requiresBuild: true
     dependencies:
       '@prisma/engines': 5.9.0
-    dev: true
 
   /process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
