@@ -47,4 +47,4 @@ jobs:
             pnpm install --prod
             pnpm db:generate
             pm2 kill
-            pm2 start /root/kantt-api/dist/main.js -f
+            pm2 start pnpm --name "kantt-api" -- run start:prod
