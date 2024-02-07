@@ -8,9 +8,14 @@ import { v4 as uuidv4 } from 'uuid';
 export class AreaService {
   constructor(private prisma: PrismaService) {}
   create(data: Prisma.AreaCreateInput, authorId: number): Promise<Area> {
+    const { parentId, ...rest } = data as any;
+    const dynamicParent = parentId
+      ? { parent: { connect: { id: parentId } } }
+      : {};
     return this.prisma.area.create({
       data: {
-        ...data,
+        ...rest,
+        ...dynamicParent,
         author: {
           connect: {
             id: authorId,
