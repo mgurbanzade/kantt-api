@@ -18,6 +18,7 @@ import {
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 import { CreateResourceInput } from '@src/types/graphql';
 import { CurrentUser } from '@src/user/user.decorator';
+import { ResourceAuthorGuard } from './guards/resource-author.guard';
 
 @Resolver('Resource')
 export class ResourceResolver {
@@ -31,7 +32,6 @@ export class ResourceResolver {
     @Args('connectResourceInput') connectResourceInput: ConnectResourceInput,
     @CurrentUser() user: { userId: number },
   ) {
-    console.log('user', user);
     return this.resourceService.create(
       createResourceInput,
       connectResourceInput,
@@ -46,25 +46,28 @@ export class ResourceResolver {
   }
 
   @Query('getArchivedResources')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ResourceAuthorGuard)
   findArchived() {
     return this.resourceService.findArchived();
   }
 
   @Query('getResource')
-  // @UseGuards(JwtAuthGuard)
-  findOne(@Args('where') where: ResourceWhereInput) {
+  @UseGuards(JwtAuthGuard, ResourceAuthorGuard)
+  findOne(
+    @Args('where') where: ResourceWhereInput,
+    @CurrentUser() user: { userId: number },
+  ) {
     const { uuid } = where;
 
-    if (uuid) {
+    if (uuid && uuid !== 'ROOT') {
       return this.resourceService.findOne({ uuid });
     } else {
-      return this.resourceService.getRootResource();
+      return this.resourceService.getRootResource(user.userId);
     }
   }
 
   @Mutation('updateResource')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ResourceAuthorGuard)
   update(
     @Args('uuid') uuid: string,
     @Args('updateResourceInput')
@@ -74,19 +77,19 @@ export class ResourceResolver {
   }
 
   @Mutation('removeResource')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, ResourceAuthorGuard)
   remove(@Args('uuid') uuid: string) {
     return this.resourceService.remove({ uuid });
   }
 
   @Mutation('archiveResource')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  @UseGuards(JwtAuthGuard, ResourceAuthorGuard)
   archive(@Args('uuid') uuid: string) {
     return this.resourceService.archive(uuid);
   }
 
   @Mutation('unarchiveResource')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  @UseGuards(JwtAuthGuard, ResourceAuthorGuard)
   unarchive(@Args('uuid') uuid: string) {
     return this.resourceService.unarchive(uuid);
   }

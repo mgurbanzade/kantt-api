@@ -11,14 +11,21 @@ export class ResourceAuthorGuard implements CanActivate {
     const request = ctx.getContext().req;
     const requestedUser = request.user;
     const queryVariables = request.body.variables;
-
-    if (!requestedUser || !queryVariables.uuid) {
+    if (!requestedUser || !queryVariables.where.uuid) {
       return false;
     }
 
-    const resource = await this.resourceService.findOne({
-      uuid: queryVariables.uuid,
-    });
+    let resource;
+
+    if (queryVariables.where.uuid === 'ROOT') {
+      resource = await this.resourceService.getRootResource(
+        requestedUser.userId,
+      );
+    } else {
+      resource = await this.resourceService.findOne({
+        uuid: queryVariables.where.uuid,
+      });
+    }
 
     return resource.authorId == requestedUser.userId;
   }

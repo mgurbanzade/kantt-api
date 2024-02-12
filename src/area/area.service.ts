@@ -33,9 +33,6 @@ export class AreaService {
         isArchived: false,
         ...where,
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
     });
   }
 

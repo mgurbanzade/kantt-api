@@ -88,10 +88,11 @@ export class ResourceService {
     });
   }
 
-  getRootResource(): Promise<Resource> {
+  getRootResource(authorId: number): Promise<Resource> {
     const where: Prisma.ResourceWhereInput = {
       isRoot: true,
       isArchived: false,
+      authorId,
     };
 
     return this.prisma.resource.findFirst({
