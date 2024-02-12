@@ -21,6 +21,24 @@ export class AuthService {
     private readonly emailConfirmationService: EmailConfirmationService,
   ) {}
 
+  async validateGoogleUser(user: any): Promise<any> {
+    const existingUser = await this.userService.findOne({ email: user.email });
+
+    if (existingUser) {
+      return existingUser;
+    }
+
+    const newUser = await this.userService.create({
+      email: user.email,
+      firstname: user.firstname,
+      avatarURL: user.avatarURL,
+      isOauthUser: true,
+      password: null,
+    });
+
+    return newUser;
+  }
+
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.userService.findOne({ email });
 
@@ -37,6 +55,44 @@ export class AuthService {
         throw new Error('User not found');
       }
     }
+  }
+
+  async googleLogin(email: string): Promise<LoginResponse> {
+    const user = await this.userService.findOne({ email });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const accessToken = this.jwtService.sign(
+      {
+        email: user.email,
+        sub: user.id,
+      },
+      {
+        secret: process.env.JWT_SECRET,
+        expiresIn: `${process.env.JWT_EXPIRATION_TIME_SEC}s`,
+      },
+    );
+
+    const refreshToken = this.jwtService.sign(
+      {
+        email: user.email,
+        sub: user.id,
+      },
+      {
+        secret: process.env.JWT_RT_SECRET,
+        expiresIn: `${process.env.JWT_RT_EXPIRATION_TIME_SEC}s`,
+      },
+    );
+
+    this.userService.setCurrentRefreshToken(refreshToken, user.id);
+
+    return {
+      accessToken,
+      refreshToken,
+      user,
+    };
   }
 
   async login(ctx: any): Promise<LoginResponse> {
@@ -126,10 +182,6 @@ export class AuthService {
 
   async getCurrentUser(ctx: any): Promise<GetCurrentUserResponse> {
     const accessToken = ctx.req.cookies.Authentication;
-    const refreshToken = ctx.req.cookies.Refresh;
-    if (!accessToken && refreshToken) {
-      console.log('CURRENT UUSER', ctx?.req?.user);
-    }
 
     const data = this.jwtService.verify(accessToken, {
       secret: process.env.JWT_SECRET,
@@ -143,7 +195,9 @@ export class AuthService {
   async logout(ctx): Promise<LogoutResponse> {
     if (!ctx?.req?.user.userId) throw new Error('User is not present');
     const domain =
-      process.env.NODE_ENV === 'development' ? 'localhost' : 'kantt.io';
+      process.env.NODE_ENV === 'development'
+        ? 'localhost'
+        : process.env.FE_ORIGIN;
 
     const accessCookie = `Authentication=; Domain=${domain}; HttpOnly; Path=/; Max-Age=0`;
     const refreshCookie = `Refresh=; Domain=${domain}; HttpOnly; Path=/; Max-Age=0`;

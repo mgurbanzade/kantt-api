@@ -8,12 +8,11 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const isDev = process.env.NODE_ENV === 'development';
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'https://studio.apollographql.com',
-      'https://kantt.io',
-    ], // fix me
+    origin: isDev
+      ? ['http://localhost:3000', 'https://studio.apollographql.com']
+      : [process.env.FE_URL],
     credentials: true,
   });
 

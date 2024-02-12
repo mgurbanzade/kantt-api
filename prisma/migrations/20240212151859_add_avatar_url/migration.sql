@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "avatarURL" VARCHAR(200),
+ADD COLUMN     "isOauthUser" BOOLEAN NOT NULL DEFAULT false,
+ALTER COLUMN "password" DROP NOT NULL;

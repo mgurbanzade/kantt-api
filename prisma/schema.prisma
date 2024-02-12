@@ -13,11 +13,13 @@ model User {
   id                        Int        @id @default(autoincrement())
   email                     String     @unique @db.VarChar(200)
   firstname                 String     @db.VarChar(200)
-  password                  String     @db.VarChar(200)
+  password                  String?    @db.VarChar(200)
   phone                     String?    @unique @db.VarChar(20)
   lastname                  String?    @db.VarChar(200)
   currentHashedRefreshToken String?    @db.VarChar(200)
   currentPasswordResetToken String?    @db.VarChar(200)
+  avatarURL                 String?    @db.VarChar(200)
+  isOauthUser               Boolean    @default(false)
   isEmailConfirmed          Boolean    @default(false)
   projects                  Project[]
   areas                     Area[]

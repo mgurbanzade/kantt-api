@@ -27,19 +27,21 @@ export class AreaService {
     });
   }
 
-  findAll(where: Prisma.AreaWhereInput): Promise<Area[]> {
+  findAll(where: Prisma.AreaWhereInput, authorId: number): Promise<Area[]> {
     return this.prisma.area.findMany({
       where: {
-        isArchived: false,
         ...where,
+        isArchived: false,
+        authorId,
       },
     });
   }
 
-  findArchived(): Promise<Area[]> {
+  findArchived(authorId: number): Promise<Area[]> {
     return this.prisma.area.findMany({
       where: {
         isArchived: true,
+        authorId,
       },
     });
   }

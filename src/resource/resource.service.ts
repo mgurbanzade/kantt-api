@@ -65,19 +65,24 @@ export class ResourceService {
     });
   }
 
-  findAll(where: Prisma.ResourceWhereInput): Promise<Resource[]> {
+  findAll(
+    where: Prisma.ResourceWhereInput,
+    authorId: number,
+  ): Promise<Resource[]> {
     return this.prisma.resource.findMany({
       where: {
         ...where,
+        authorId,
         isArchived: false,
       },
     });
   }
 
-  findArchived(): Promise<Resource[]> {
+  findArchived(authorId: number): Promise<Resource[]> {
     return this.prisma.resource.findMany({
       where: {
         isArchived: true,
+        authorId,
       },
     });
   }

@@ -11,6 +11,8 @@ import { JwtRefreshTokenStrategy } from '@src/auth/jwt-rt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { EmailConfirmationService } from '@src/email/emailConfirmation.service';
 import { EmailService } from '@src/email/email.service';
+import { GoogleStrategy } from './google-oauth.strategy';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { EmailService } from '@src/email/email.service';
     JwtRefreshTokenStrategy,
     EmailService,
     EmailConfirmationService,
+    GoogleStrategy,
   ],
+  controllers: [AuthController],
 })
 export class AuthModule {}

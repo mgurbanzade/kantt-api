@@ -6,13 +6,17 @@ type User {
   lastname: String
   password: String
   email: String
+  avatarURL: String
+  isOauthUser: Boolean
 }
 
 input CreateUserInput {
   firstname: String!
   lastname: String!
-  password: String!
+  password: String
   email: String!
+  avatarURL: String
+  isOauthUser: Boolean
 }
 
 input UpdateUserInput {

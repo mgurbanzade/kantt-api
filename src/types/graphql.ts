@@ -155,8 +155,10 @@ export class TaskWhereInput {
 export class CreateUserInput {
     firstname: string;
     lastname: string;
-    password: string;
+    password?: Nullable<string>;
     email: string;
+    avatarURL?: Nullable<string>;
+    isOauthUser?: Nullable<boolean>;
 }
 
 export class UpdateUserInput {
@@ -424,6 +426,8 @@ export class User {
     lastname?: Nullable<string>;
     password?: Nullable<string>;
     email?: Nullable<string>;
+    avatarURL?: Nullable<string>;
+    isOauthUser?: Nullable<boolean>;
 }
 
 export type AccountType = any;

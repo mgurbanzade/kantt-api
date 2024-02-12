@@ -41,14 +41,17 @@ export class ResourceResolver {
 
   @Query('getAllResources')
   @UseGuards(JwtAuthGuard)
-  findAll(@Args('where') where: Prisma.ResourceWhereInput) {
-    return this.resourceService.findAll(where);
+  findAll(
+    @Args('where') where: Prisma.ResourceWhereInput,
+    @CurrentUser() user: { userId: number },
+  ) {
+    return this.resourceService.findAll(where, user.userId);
   }
 
   @Query('getArchivedResources')
   @UseGuards(JwtAuthGuard, ResourceAuthorGuard)
-  findArchived() {
-    return this.resourceService.findArchived();
+  findArchived(@CurrentUser() user: { userId: number }) {
+    return this.resourceService.findArchived(user.userId);
   }
 
   @Query('getResource')

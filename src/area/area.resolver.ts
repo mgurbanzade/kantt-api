@@ -30,14 +30,17 @@ export class AreaResolver {
 
   @Query('getAllAreas')
   @UseGuards(JwtAuthGuard)
-  findAll(@Args('where') where: Prisma.AreaWhereInput) {
-    return this.areaService.findAll(where);
+  findAll(
+    @Args('where') where: Prisma.AreaWhereInput,
+    @CurrentUser() user: { userId: number },
+  ) {
+    return this.areaService.findAll(where, user.userId);
   }
 
   @Query('getArchivedAreas')
   @UseGuards(JwtAuthGuard)
-  findArchived() {
-    return this.areaService.findArchived();
+  findArchived(@CurrentUser() user: { userId: number }) {
+    return this.areaService.findArchived(user.userId);
   }
 
   @Query('getArea')
