@@ -36,16 +36,24 @@ export class TaskService {
     });
   }
 
-  findAll(where: Prisma.TaskWhereInput): Promise<Task[]> {
+  findAll(where: Prisma.TaskWhereInput, authorId: number): Promise<Task[]> {
     return this.prisma.task.findMany({
-      where,
+      where: {
+        ...where,
+        project: {
+          authorId,
+        },
+      },
     });
   }
 
-  findArchived(): Promise<Task[]> {
+  findArchived(authorId: number): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
         isArchived: true,
+        project: {
+          authorId,
+        },
       },
     });
   }

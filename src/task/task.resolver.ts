@@ -1,9 +1,11 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { TaskService } from './task.service';
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 import { CreateTaskInput } from '@src/types/graphql';
+import { CurrentUser } from '@src/user/user.decorator';
+import { TaskAuthorGuard } from './guards/task-author.guard';
+import { TaskService } from './task.service';
 
 @Resolver('Task')
 export class TaskResolver {
@@ -20,24 +22,27 @@ export class TaskResolver {
 
   @Query('getAllTasks')
   @UseGuards(JwtAuthGuard)
-  findAll(@Args('where') where: Prisma.TaskWhereInput) {
-    return this.taskService.findAll(where);
+  findAll(
+    @Args('where') where: Prisma.TaskWhereInput,
+    @CurrentUser() user: { userId: number },
+  ) {
+    return this.taskService.findAll(where, user.userId);
   }
 
   @Query('getArchivedTasks')
-  // @UseGuards(JwtAuthGuard)
-  findArchived() {
-    return this.taskService.findArchived();
+  @UseGuards(JwtAuthGuard)
+  findArchived(@CurrentUser() user: { userId: number }) {
+    return this.taskService.findArchived(user.userId);
   }
 
   @Query('getTask')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, TaskAuthorGuard)
   findOne(@Args('uuid') uuid: string) {
     return this.taskService.findOne({ uuid });
   }
 
   @Mutation('updateTask')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, TaskAuthorGuard)
   update(
     @Args('uuid') uuid: string,
     @Args('updateTaskInput')
@@ -47,22 +52,20 @@ export class TaskResolver {
   }
 
   @Mutation('removeTask')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, TaskAuthorGuard)
   remove(@Args('uuid') uuid: string) {
     return this.taskService.remove({ uuid });
   }
 
   @Mutation('archiveTask')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  @UseGuards(JwtAuthGuard, TaskAuthorGuard)
   archive(@Args('uuid') uuid: string) {
     return this.taskService.archive(uuid);
   }
 
   @Mutation('unarchiveTask')
-  // @UseGuards(JwtAuthGuard, AuthorGuard)
+  @UseGuards(JwtAuthGuard, TaskAuthorGuard)
   unarchive(@Args('uuid') uuid: string) {
     return this.taskService.unarchive(uuid);
   }
-
-  // Fields
 }

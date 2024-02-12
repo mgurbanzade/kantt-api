@@ -49,7 +49,7 @@ export class ResourceResolver {
   }
 
   @Query('getArchivedResources')
-  @UseGuards(JwtAuthGuard, ResourceAuthorGuard)
+  @UseGuards(JwtAuthGuard)
   findArchived(@CurrentUser() user: { userId: number }) {
     return this.resourceService.findArchived(user.userId);
   }
