@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User, Prisma } from '@prisma/client';
-import { Project } from '@src/types/graphql';
+import { Project, TasksOrdersInput } from '@src/types/graphql';
 import { PrismaService } from '@src/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -110,6 +110,28 @@ export class ProjectService {
     });
   }
 
+  async updateTasksOrders(
+    uuid: string,
+    data: TasksOrdersInput[],
+  ): Promise<Project> {
+    return this.prisma.project.update({
+      where: { uuid },
+      data: {
+        tasks: {
+          updateMany: data.map((task) => ({
+            where: {
+              id: task.id,
+            },
+            data: {
+              order: task.order,
+              columnId: task.columnId,
+            },
+          })),
+        },
+      },
+    });
+  }
+
   remove(where: Prisma.ProjectWhereUniqueInput): Promise<Project> {
     return this.prisma.project.delete({
       where,
@@ -192,5 +214,13 @@ export class ProjectService {
         where: { id },
       })
       .subprojects();
+  }
+
+  resources(projectId: number) {
+    return this.prisma.resource.findMany({
+      where: {
+        projectId,
+      },
+    });
   }
 }

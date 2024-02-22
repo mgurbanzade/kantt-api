@@ -8,7 +8,14 @@ import {
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Prisma, Project } from '@prisma/client';
-import { Area, Board, User, Task } from '@src/types/graphql';
+import {
+  Area,
+  Board,
+  User,
+  Task,
+  TasksOrdersInput,
+  Resource,
+} from '@src/types/graphql';
 import { ProjectService } from './project.service';
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 import { ProjectAuthorGuard } from './guards/project-author.guard';
@@ -75,6 +82,16 @@ export class ProjectResolver {
     return this.projectService.update(uuid, updateProjectInput, areaIds);
   }
 
+  @Mutation('updateProjectTasksOrders')
+  @UseGuards(JwtAuthGuard, ProjectAuthorGuard)
+  updateTasksOrders(
+    @Args('uuid') uuid: string,
+    @Args('tasksOrdersInput')
+    tasksOrdersInput: TasksOrdersInput[],
+  ) {
+    return this.projectService.updateTasksOrders(uuid, tasksOrdersInput);
+  }
+
   @Mutation('removeProject')
   @UseGuards(JwtAuthGuard, ProjectAuthorGuard)
   remove(@Args('uuid') uuid: string) {
@@ -118,5 +135,10 @@ export class ProjectResolver {
   @ResolveField(() => [Area])
   subprojects(@Parent() project: Project) {
     return this.projectService.subprojects(project.id);
+  }
+
+  @ResolveField(() => [Resource])
+  resources(@Parent() project: Project) {
+    return this.projectService.resources(project.id);
   }
 }

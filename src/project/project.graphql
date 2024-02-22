@@ -11,6 +11,7 @@ type Project {
   areas: [Area]
   tasks: [Task]
   subprojects: [Project]
+  resources: [Resource]
   parentId: Int
   emoji: String
 }
@@ -38,6 +39,12 @@ input ProjectWhereInput {
   isArchived: Boolean
 }
 
+input TasksOrdersInput {
+  id: Int
+  order: Int
+  columnId: Int
+}
+
 type Query {
   getAllProjects(where: ProjectWhereInput): [Project]!
   getProject(uuid: String!): Project
@@ -59,4 +66,8 @@ type Mutation {
   removeProject(uuid: String!): Project
   archiveProject(uuid: String!): Project
   unarchiveProject(uuid: String!): Project
+  updateProjectTasksOrders(
+    uuid: String!
+    tasksOrdersInput: [TasksOrdersInput]!
+  ): Project
 }

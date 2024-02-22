@@ -174,6 +174,12 @@ export class ResetPasswordInput {
     email: string;
 }
 
+export class TasksOrdersInput {
+    id?: Nullable<number>;
+    order?: Nullable<number>;
+    columnId?: Nullable<number>;
+}
+
 export class Area {
     id?: Nullable<number>;
     uuid?: Nullable<string>;
@@ -310,6 +316,8 @@ export abstract class IMutation {
     abstract resetPassword(resetPasswordInput: ResetPasswordInput): User | Promise<User>;
 
     abstract removeUser(id: number): Nullable<User> | Promise<Nullable<User>>;
+
+    abstract updateProjectTasksOrders(uuid: string, tasksOrdersInput: Nullable<TasksOrdersInput>[]): Nullable<Project> | Promise<Nullable<Project>>;
 }
 
 export class LoginResponse {
@@ -382,6 +390,7 @@ export class Project {
     subprojects?: Nullable<Nullable<Project>[]>;
     parentId?: Nullable<number>;
     emoji?: Nullable<string>;
+    resources?: Nullable<Nullable<Resource>[]>;
 }
 
 export class Resource {
