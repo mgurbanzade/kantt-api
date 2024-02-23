@@ -118,6 +118,7 @@ model Task {
   title       String    @db.VarChar(200)
   description String?
   order       Float?
+  listOrder   Float?
   boardId     Int?
   columnId    Int?
   projectId   Int?

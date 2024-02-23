@@ -43,6 +43,7 @@ input TasksOrdersInput {
   id: Int
   order: Int
   columnId: Int
+  listOrder: Int
 }
 
 type Query {

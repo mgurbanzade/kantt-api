@@ -133,6 +133,7 @@ export class CreateTaskInput {
     columnId?: Nullable<number>;
     projectId?: Nullable<number>;
     dueDate?: Nullable<DateTime>;
+    listOrder?: Nullable<number>;
 }
 
 export class UpdateTaskInput {
@@ -142,6 +143,7 @@ export class UpdateTaskInput {
     order?: Nullable<number>;
     isCompleted?: Nullable<boolean>;
     dueDate?: Nullable<DateTime>;
+    listOrder?: Nullable<number>;
 }
 
 export class TaskWhereInput {
@@ -178,6 +180,7 @@ export class TasksOrdersInput {
     id?: Nullable<number>;
     order?: Nullable<number>;
     columnId?: Nullable<number>;
+    listOrder?: Nullable<number>;
 }
 
 export class Area {
@@ -427,6 +430,7 @@ export class Task {
     dueDate?: Nullable<DateTime>;
     isCompleted?: Nullable<boolean>;
     isArchived?: Nullable<boolean>;
+    listOrder?: Nullable<number>;
 }
 
 export class User {

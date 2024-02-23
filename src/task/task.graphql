@@ -6,6 +6,7 @@ type Task {
   title: String
   description: String
   order: Float
+  listOrder: Float
   board: Board
   column: Column
   columnId: Int
@@ -20,6 +21,7 @@ input CreateTaskInput {
   title: String!
   description: String
   order: Float
+  listOrder: Float
   boardId: Int
   columnId: Int
   projectId: Int
@@ -31,6 +33,7 @@ input UpdateTaskInput {
   description: String
   columnId: Int
   order: Float
+  listOrder: Float
   isCompleted: Boolean
   dueDate: DateTime
 }

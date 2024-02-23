@@ -114,19 +114,21 @@ export class ProjectService {
     uuid: string,
     data: TasksOrdersInput[],
   ): Promise<Project> {
+    console.log({ data });
     return this.prisma.project.update({
       where: { uuid },
       data: {
         tasks: {
-          updateMany: data.map((task) => ({
-            where: {
-              id: task.id,
-            },
-            data: {
-              order: task.order,
-              columnId: task.columnId,
-            },
-          })),
+          updateMany: data.map((task) => {
+            const { id, ...data } = task;
+
+            return {
+              where: {
+                id,
+              },
+              data,
+            };
+          }),
         },
       },
     });
@@ -202,7 +204,7 @@ export class ProjectService {
         isArchived: false,
       },
       orderBy: {
-        id: 'asc',
+        listOrder: 'asc',
       },
     });
   }
