@@ -23,7 +23,7 @@ jobs:
 
       - name: Archive Dist Folder
         run: |
-          tar -czvf dist.tar.gz ./dist ./prisma package.json pnpm-lock.yaml
+          tar -czvf dist.tar.gz ./dist ./prisma ./templates package.json pnpm-lock.yaml
 
       - name: Copy Dist Archive to Server
         uses: appleboy/scp-action@master

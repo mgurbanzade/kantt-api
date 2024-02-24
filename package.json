@@ -23,9 +23,7 @@
     "db:migrate": "npx prisma migrate dev",
     "db:generate": "npx prisma generate",
     "db:seed": "npx prisma db seed",
-    "db:pull": "npx prisma db pull",
-    "docker:seed": "docker exec -it kantt-api npx prisma db seed",
-    "docker:db:generate": "docker exec -it kantt-api npx prisma generate"
+    "db:pull": "npx prisma db pull"
   },
   "dependencies": {
     "@apollo/server": "^4.9.3",
