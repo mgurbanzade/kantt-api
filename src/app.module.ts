@@ -38,7 +38,15 @@ import { ResourceModule } from './resource/resource.module';
       }),
     }),
     MailerModule.forRoot({
-      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+      transport: {
+        host: 'smtp-relay.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      },
       template: {
         dir: process.cwd() + '/templates/',
         adapter: new HandlebarsAdapter(),

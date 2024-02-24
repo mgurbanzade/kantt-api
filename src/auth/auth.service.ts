@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable } from '@nestjs/common';
 import { UserService } from '@src/user/user.service';
-// import { EmailService } from '@src/email/email.service';
 import { EmailConfirmationService } from '@src/email/emailConfirmation.service';
 import {
   GetCurrentUserResponse,
@@ -35,6 +34,11 @@ export class AuthService {
       isOauthUser: true,
       password: null,
     });
+
+    this.emailConfirmationService.sendVerificationLink(
+      newUser.email,
+      newUser.firstname,
+    );
 
     return newUser;
   }
@@ -228,10 +232,10 @@ export class AuthService {
       password: encPass,
     });
 
-    // await this.emailConfirmationService.sendVerificationLink(
-    //   newUser.email,
-    //   newUser.firstname,
-    // );
+    this.emailConfirmationService.sendVerificationLink(
+      newUser.email,
+      newUser.firstname,
+    );
 
     return {
       user: newUser,
